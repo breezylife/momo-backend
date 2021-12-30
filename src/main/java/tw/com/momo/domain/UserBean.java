@@ -1,5 +1,7 @@
 package tw.com.momo.domain;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,72 +15,91 @@ import javax.persistence.UniqueConstraint;
 public class UserBean {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private long id;
 	private String email;
 	private String password;
 	private String gender;
-	private String birthday;
+	private Date birthday;
 	private String phone;
 	private String address;
 	private String username;
 	private String userphoto;
+
 	@Override
 	public String toString() {
 		return "UserBean [id=" + id + ", email=" + email + ", password=" + password + ", gender=" + gender
 				+ ", birthday=" + birthday + ", phone=" + phone + ", address=" + address + ", username=" + username
 				+ ", userphoto=" + userphoto + "]";
 	}
-	public Integer getId() {
+
+	public long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+
+	public void setId(long id) {
 		this.id = id;
 	}
+
 	public String getEmail() {
 		return email;
 	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 	public String getGender() {
 		return gender;
 	}
+
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public String getBirthday() {
+
+	public Date getBirthday() {
 		return birthday;
 	}
-	public void setBirthday(String birthday) {
+
+	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
 	}
+
 	public String getPhone() {
 		return phone;
 	}
+
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+
 	public String getAddress() {
 		return address;
 	}
+
 	public void setAddress(String address) {
 		this.address = address;
 	}
+
 	public String getUsername() {
 		return username;
 	}
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
 	public String getUserphoto() {
 		return userphoto;
 	}
+
 	public void setUserphoto(String userphoto) {
 		this.userphoto = userphoto;
 	}

@@ -18,50 +18,47 @@ import tw.com.momo.domain.UserBean;
 import tw.com.momo.dto.LoginDto;
 import tw.com.momo.dto.SignUpDto;
 
+@RestController
+@RequestMapping("/api/auth")
 public class UserRestApiController {
-	@RestController
-	@RequestMapping("/api/auth")
-	public class AuthController {
-	    @Autowired
-	    private AuthenticationManager authenticationManager;
-	    @Autowired
-	    private UserRepository userRepository;
-	    @Autowired
-	    private PasswordEncoder passwordEncoder;
 
-	    @PostMapping("/signin")
-	    public ResponseEntity<String> authenticateUser(@RequestBody LoginDto loginDto){
-	        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-	                loginDto.getUserEmail(), loginDto.getPassword()));
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
-	        SecurityContextHolder.getContext().setAuthentication(authentication);
-	        return new ResponseEntity<>("User signed-in successfully!.", HttpStatus.OK);
-	    }
+	@PostMapping("/signin")
+	public ResponseEntity<String> authenticateUser(@RequestBody LoginDto loginDto) {
+		Authentication authentication = authenticationManager
+				.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
 
-	    @PostMapping("/signup")
-	    public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto){
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		return new ResponseEntity<>("User signed-in successfully!.", HttpStatus.OK);
+	}
 
-	        // add check for username exists in a DB
-	        if(userRepository.existsByUsername(signUpDto.getUsername())){
-	            return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);
-	        }
+	@PostMapping("/signup")
+	public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto) {
+		// add check for username exists in a DB
+		if (userRepository.existsByUsername(signUpDto.getUsername())) {
+			return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);
+		}
 
-	        // add check for email exists in DB
-	        if(userRepository.existsByEmail(signUpDto.getEmail())){
-	            return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
-	        }
+		// add check for email exists in DB
+		if (userRepository.existsByEmail(signUpDto.getEmail())) {
+			return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
+		}
 
-	        // create user object
-	        UserBean user = new UserBean();
-	        user.setName(signUpDto.getName());
-	        user.setUsername(signUpDto.getUsername());
-	        user.setEmail(signUpDto.getEmail());
-	        user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
+		// create user object
+		UserBean user = new UserBean();
+		user.setUsername(signUpDto.getUsername());
+		user.setEmail(signUpDto.getEmail());
+		user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
 
-	        userRepository.save(user);
+		userRepository.save(user);
 
-	        return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
+		return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
 
-	    }
 	}
 }

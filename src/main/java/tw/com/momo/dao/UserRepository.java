@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import tw.com.momo.domain.UserBean;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserBean, Integer>{
+public interface UserRepository extends JpaRepository<UserBean, Long>{
 	Optional<UserBean> findByEmail(String email);
     Optional<UserBean> findByUsername(String username);
     Boolean existsByUsername(String username);

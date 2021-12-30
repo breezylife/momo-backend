@@ -1,4 +1,4 @@
-package tw.com.momo.springSecurityConfiguration;
+package tw.com.momo.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
