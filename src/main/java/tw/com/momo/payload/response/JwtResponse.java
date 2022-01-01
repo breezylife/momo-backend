@@ -1,4 +1,4 @@
-package tw.com.momo.dto.response;
+package tw.com.momo.payload.response;
 
 import java.util.List;
 

@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import tw.com.momo.dao.UserRepository;
-import tw.com.momo.domain.UserBean;
+import tw.com.momo.model.UserBean;
 
 @Service
 public class UserRepositoryService implements UserDetailsService {
