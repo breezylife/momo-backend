@@ -18,20 +18,10 @@ public class UserRepositoryService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		UserBean userBean = userRepository.findByEmail(email).orElseThrow(
+		
+		UserBean user = userRepository.findByEmail(email).orElseThrow(
 				() -> new UsernameNotFoundException("User not found with email:" + email));
-		return new org.springframework.security.core.userdetails.User(userBean.getEmail(), userBean.getPassword(),
-				Collections.emptyList());
+		return UserDetailsImpl.build(user);
 	}
 
-//	public UserBean signup(UserBean bean) {
-//		UserBean result = null;
-//		if (bean != null && bean.getId() != null) {
-//			boolean exist = userRepository.existsById(bean.getId());
-//			if (!exist) {
-//				return userRepository.save(bean);
-//			}
-//		}
-//		return result;
-//	}
 }

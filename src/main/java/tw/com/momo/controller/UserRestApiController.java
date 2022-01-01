@@ -1,5 +1,8 @@
 package tw.com.momo.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import tw.com.momo.dao.UserRepository;
 import tw.com.momo.domain.UserBean;
-import tw.com.momo.dto.LoginDto;
-import tw.com.momo.dto.SignUpDto;
+import tw.com.momo.dto.request.LoginDto;
+import tw.com.momo.dto.request.SignUpDto;
+import tw.com.momo.dto.response.JwtResponse;
+import tw.com.momo.service.UserDetailsImpl;
+import tw.com.momo.utils.JwtUtils;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -28,14 +34,24 @@ public class UserRestApiController {
 	private UserRepository userRepository;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-
+	@Autowired
+	JwtUtils jwtUtils;
+	
 	@PostMapping("/signin")
-	public ResponseEntity<String> authenticateUser(@RequestBody LoginDto loginDto) {
+	public ResponseEntity<?> authenticateUser(@RequestBody LoginDto loginDto) {
 		Authentication authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		return new ResponseEntity<>("User signed-in successfully!.", HttpStatus.OK);
+		String jwt = jwtUtils.generateJwtToken(authentication);
+
+		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();	
+
+		System.out.println("1234"+authentication.getPrincipal());
+		return ResponseEntity.ok(new JwtResponse(jwt, 
+				 userDetails.getId(), 
+				 userDetails.getUsername(), 
+				 userDetails.getEmail()));
 	}
 
 	@PostMapping("/signup")

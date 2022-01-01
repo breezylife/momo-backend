@@ -1,4 +1,4 @@
-package tw.com.momo.dto;
+package tw.com.momo.dto.request;
 
 public class SignUpDto {
 	private String email;
