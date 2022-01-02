@@ -54,13 +54,14 @@ public class UserRestApiController {
 	public ResponseEntity<?> authenticateUser(@RequestBody LoginDto loginDto) {
 		Authentication authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
-
+		
+		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+		System.out.println(userDetails.isEnabled());
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtUtils.generateJwtToken(authentication);
 
-		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+		
 
-		System.out.println("1234" + authentication.getPrincipal());
 		return ResponseEntity
 				.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail()));
 	}
