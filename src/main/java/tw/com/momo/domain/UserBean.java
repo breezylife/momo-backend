@@ -24,7 +24,8 @@ public class UserBean {
 	private String address;
 	private String username;
 	private String userphoto;
-
+	private boolean isEnabled;
+	
 	@Override
 	public String toString() {
 		return "UserBean [id=" + id + ", email=" + email + ", password=" + password + ", gender=" + gender
@@ -103,4 +104,13 @@ public class UserBean {
 	public void setUserphoto(String userphoto) {
 		this.userphoto = userphoto;
 	}
+
+	public boolean isEnabled() {
+		return isEnabled;
+	}
+
+	public void setEnabled(boolean isEnabled) {
+		this.isEnabled = isEnabled;
+	}
+	
 }
