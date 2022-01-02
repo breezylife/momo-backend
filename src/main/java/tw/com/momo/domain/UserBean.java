@@ -1,4 +1,4 @@
-package tw.com.momo.model;
+package tw.com.momo.domain;
 
 import java.util.Date;
 

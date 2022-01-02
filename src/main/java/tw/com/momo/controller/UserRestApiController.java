@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import tw.com.momo.dao.UserRepository;
-import tw.com.momo.model.UserBean;
+import tw.com.momo.domain.UserBean;
 import tw.com.momo.payload.request.LoginDto;
 import tw.com.momo.payload.request.SignUpDto;
 import tw.com.momo.payload.response.JwtResponse;

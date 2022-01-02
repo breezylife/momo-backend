@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import tw.com.momo.model.UserBean;
+import tw.com.momo.domain.UserBean;
 
 public class UserDetailsImpl implements UserDetails {
 	private static final long serialVersionUID = 1L;
