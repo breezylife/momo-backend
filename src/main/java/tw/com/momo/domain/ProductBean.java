@@ -1,6 +1,7 @@
 package tw.com.momo.domain;
 
 import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.persistence.Entity;
@@ -30,12 +31,16 @@ public class ProductBean {
 	@Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
-//    @OneToOne(targetEntity = UserBean.class, fetch = FetchType.EAGER)
-//    @JoinColumn(nullable = false, name = "userid")
-//    private UserBean userBean;
+    @OneToOne(targetEntity = UserBean.class, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false, name = "sellerid")
+    private UserBean userBean;
     
-    public ProductBean(UserBean userBean) {
-//        this.userBean = userBean;
+    public ProductBean() {
+    	
+    }
+	
+	public ProductBean(UserBean user) {
+        this.userBean = user;
         createdDate = new Date();
     }
 
@@ -95,11 +100,11 @@ public class ProductBean {
 		this.createdDate = createdDate;
 	}
 
-//	public UserBean getUserBean() {
-//		return userBean;
-//	}
-//
-//	public void setUserBean(UserBean userBean) {
-//		this.userBean = userBean;
-//	}
+	public UserBean getUserBean() {
+		return userBean;
+	}
+
+	public void setUserBean(UserBean userBean) {
+		this.userBean = userBean;
+	}
 }

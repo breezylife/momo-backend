@@ -85,7 +85,7 @@ public class UserRestApiController {
 			user.setAddress(signUpDto.getAddress());
 			user.setUsername(signUpDto.getUsername());
 			user.setUserphoto(signUpDto.getUserphoto());
-
+			
 			userRepository.save(user);
 
 			ConfirmationTokenBean confirmationToken = new ConfirmationTokenBean(user);

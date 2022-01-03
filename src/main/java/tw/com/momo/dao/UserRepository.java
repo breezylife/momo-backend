@@ -9,8 +9,8 @@ import tw.com.momo.domain.UserBean;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserBean, Integer>{
-	Optional<UserBean> findByEmail(String email);
-	Optional<UserBean> findByUsername(String username);
+	UserBean findByEmail(String email);
+	UserBean findByUsername(String username);
     Boolean existsByUsername(String username);
     Boolean existsByEmail(String email);
 	void save(Optional<UserBean> user);

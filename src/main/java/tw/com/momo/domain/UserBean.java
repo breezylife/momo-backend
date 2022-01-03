@@ -112,5 +112,4 @@ public class UserBean {
 	public void setEnabled(boolean isEnabled) {
 		this.isEnabled = isEnabled;
 	}
-	
 }
