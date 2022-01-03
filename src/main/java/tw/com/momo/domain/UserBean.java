@@ -15,7 +15,7 @@ import javax.persistence.UniqueConstraint;
 public class UserBean {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Integer id;
 	private String email;
 	private String password;
 	private String gender;
@@ -33,11 +33,11 @@ public class UserBean {
 				+ ", userphoto=" + userphoto + "]";
 	}
 
-	public long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
