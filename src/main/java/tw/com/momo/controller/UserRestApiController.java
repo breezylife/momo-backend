@@ -52,15 +52,13 @@ public class UserRestApiController {
 	public ResponseEntity<?> authenticateUser(@RequestBody LoginDto loginDto) {
 		Authentication authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
-
+		
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-
-			SecurityContextHolder.getContext().setAuthentication(authentication);
+//			SecurityContextHolder.getContext().setAuthentication(authentication);
 			String jwt = jwtUtils.generateJwtToken(authentication);
-
+			
 			return ResponseEntity
 					.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail()));
-
 	}
 
 //	@RequestMapping(value = "/register", method = RequestMethod.GET)
@@ -72,7 +70,7 @@ public class UserRestApiController {
 
 	@PostMapping("/register")
 	public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto) {
-
+		System.out.println(userRepository.findByEmail(signUpDto.getEmail()));
 		if (userRepository.existsByUsername(signUpDto.getUsername())) {
 			return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);
 		} else if (userRepository.existsByEmail(signUpDto.getEmail())) {
@@ -111,14 +109,16 @@ public class UserRestApiController {
 	@GetMapping("/confirm-account")
 	public ResponseEntity<?> confirmUserAccount(@RequestParam("token") String confirmationToken) {
 		ConfirmationTokenBean token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
-
+		
 		String content;
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.setContentType(MediaType.TEXT_HTML);
 		if (token != null) {
 			UserBean user = token.getUserBean();
 			user.setEnabled(true);
+			
 			userRepository.save(user);
+			
 
 			content = "<h3>Congratulations! Your account has been activated and email is verified!</h3>";
 //			Optional<UserBean> user = userRepository.findByEmail(token.getUserBean().getEmail());
