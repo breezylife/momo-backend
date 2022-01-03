@@ -54,7 +54,7 @@ public class UserRestApiController {
 				.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
 		
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-//			SecurityContextHolder.getContext().setAuthentication(authentication);
+			SecurityContextHolder.getContext().setAuthentication(authentication);
 			String jwt = jwtUtils.generateJwtToken(authentication);
 			
 			return ResponseEntity
@@ -70,7 +70,7 @@ public class UserRestApiController {
 
 	@PostMapping("/register")
 	public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto) {
-		System.out.println(userRepository.findByEmail(signUpDto.getEmail()));
+		
 		if (userRepository.existsByUsername(signUpDto.getUsername())) {
 			return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);
 		} else if (userRepository.existsByEmail(signUpDto.getEmail())) {

@@ -44,7 +44,7 @@ public class ProductRestApiController {
 			UserDetails userDetails =
 					(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			UserBean user = userRepository.findByUsername(userDetails.getUsername());
-//			 System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+			
 				ProductBean product = new ProductBean(user);
 				product.setName(productDto.getName());
 				product.setPrice(productDto.getPrice());

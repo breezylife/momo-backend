@@ -2,7 +2,15 @@ package tw.com.momo.payload.request;
 
 public class LoginDto {
     private String email;
-    private String password;
+    private String username;
+    public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	private String password;
 	@Override
 	public String toString() {
 		return "LoginDto [email=" + email + ", password=" + password + "]";
