@@ -17,7 +17,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "products")
-public class ProductsBean {
+public class ProductBean {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -34,7 +34,7 @@ public class ProductsBean {
 //    @JoinColumn(nullable = false, name = "userid")
 //    private UserBean userBean;
     
-    public ProductsBean(UserBean userBean) {
+    public ProductBean(UserBean userBean) {
 //        this.userBean = userBean;
         createdDate = new Date();
     }
