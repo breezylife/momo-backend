@@ -6,5 +6,5 @@ import tw.com.momo.domain.ProductBean;
 
 
 public interface ProductRepository extends CrudRepository<ProductBean, Integer> {
-	
+
 }

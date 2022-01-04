@@ -8,6 +8,6 @@ import org.springframework.stereotype.Service;
 import tw.com.momo.domain.ProductBean;
 
 @Service
-public interface ProductRepositoryService extends CrudRepository<ProductBean, Integer>{
+public interface ProductRepositoryService{
 	
 }

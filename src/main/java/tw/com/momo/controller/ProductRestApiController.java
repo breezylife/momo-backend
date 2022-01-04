@@ -28,14 +28,21 @@ public class ProductRestApiController {
 		ProductRepository productRepository;
 		@Autowired
 		UserRepository userRepository;
-		@Autowired
-		ProductRepositoryService productRepositoryService;
 		
 		@GetMapping("/product")
 		 public ResponseEntity<?> read() {
-			Iterable<ProductBean> products = productRepositoryService.findAll();
+			Iterable<ProductBean> products = productRepository.findAll();
 			
 			return ResponseEntity.ok(products);
+		}
+		
+		@GetMapping("/products")
+		 public ResponseEntity<?> reads() {
+			UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			UserBean user = userRepository.findByUsername(userDetails.getUsername());
+
+			
+			return ResponseEntity.ok(null);
 		}
 		
 		@PostMapping("/product")
