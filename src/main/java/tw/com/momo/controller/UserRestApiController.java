@@ -82,6 +82,7 @@ public class UserRestApiController {
 			user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
 			user.setBirthday(signUpDto.getBirthday());
 			user.setPhone(signUpDto.getPhone());
+			user.setGender(signUpDto.getGender());
 			user.setAddress(signUpDto.getAddress());
 			user.setUsername(signUpDto.getUsername());
 			user.setUserphoto(signUpDto.getUserphoto());

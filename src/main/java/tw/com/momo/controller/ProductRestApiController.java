@@ -1,14 +1,14 @@
 package tw.com.momo.controller;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +32,7 @@ public class ProductRestApiController {
 		ProductRepositoryService productRepositoryService;
 		
 		@GetMapping("/product")
-		 public ResponseEntity<?> read(@RequestBody ProductDto productDto) {
+		 public ResponseEntity<?> read() {
 			Iterable<ProductBean> products = productRepositoryService.findAll();
 			
 			return ResponseEntity.ok(products);
@@ -41,8 +41,7 @@ public class ProductRestApiController {
 		@PostMapping("/product")
 		public ResponseEntity<?> insert(@RequestBody ProductDto productDto) {
 			
-			UserDetails userDetails =
-					(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			UserBean user = userRepository.findByUsername(userDetails.getUsername());
 			
 				ProductBean product = new ProductBean(user);
@@ -55,6 +54,18 @@ public class ProductRestApiController {
 				productRepository.save(product);
 			
 				return new ResponseEntity<>(productDto.getName()+"商品已經建立", HttpStatus.OK);
+		}
+		
+		@PutMapping("/products/{id}")
+		public ResponseEntity<?> update(@PathVariable("id") Integer id,
+				@RequestBody ProductBean bean) {
+			return null;
+//			ProductBean update = productRepositoryService.update(bean);
+//			if(update!=null) {
+//				return ResponseEntity.ok(update);
+//			} else {
+//				return ResponseEntity.notFound().build();
+//			}
 		}
 		
 //		@GetMapping("/products/{id}")
@@ -81,15 +92,5 @@ public class ProductRestApiController {
 //			}
 //		}
 //		
-//		@PutMapping("/products/{id}")
-//		public ResponseEntity<?> update(@PathVariable("id") Integer id,
-//				@RequestBody ProductBean bean) {
-//			
-//			ProductBean update = productRepositoryService.update(bean);
-//			if(update!=null) {
-//				return ResponseEntity.ok(update);
-//			} else {
-//				return ResponseEntity.notFound().build();
-//			}
-//		}
+
 }

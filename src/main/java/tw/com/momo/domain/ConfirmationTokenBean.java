@@ -11,20 +11,23 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
+@Table(name="confirmationTokenBean")
 public class ConfirmationTokenBean {
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="tokenid")
     private Integer tokenid;
 
-    @Column(name="confirmation_token")
+    @Column(name="confirmationtoken")
     private String confirmationToken;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="createddate")
     private Date createdDate;
 
     @OneToOne(targetEntity = UserBean.class, fetch = FetchType.EAGER)
