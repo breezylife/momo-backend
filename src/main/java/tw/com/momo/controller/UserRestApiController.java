@@ -13,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,7 +50,8 @@ public class UserRestApiController {
 	private EmailSenderService emailSenderService;
 
 	@PostMapping("/signin")
-	public ResponseEntity<?> authenticateUser(@RequestBody LoginDto loginDto) {
+	@CrossOrigin
+	public JwtResponse authenticateUser(@RequestBody LoginDto loginDto) {
 		Authentication authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
 		
@@ -57,8 +59,7 @@ public class UserRestApiController {
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			String jwt = jwtUtils.generateJwtToken(authentication);
 			
-			return ResponseEntity
-					.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail()));
+			return new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail());
 	}
 
 //	@RequestMapping(value = "/register", method = RequestMethod.GET)
@@ -69,12 +70,15 @@ public class UserRestApiController {
 //	}
 
 	@PostMapping("/register")
-	public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto) {
+	@CrossOrigin
+	public String registerUser(@RequestBody SignUpDto signUpDto) {
 		
 		if (userRepository.existsByUsername(signUpDto.getUsername())) {
-			return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);
+//			return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);\
+			return "{\"error\":1}";
 		} else if (userRepository.existsByEmail(signUpDto.getEmail())) {
-			return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
+//			return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
+			return "{\"error\":1}";
 		} else {
 
 			UserBean user = new UserBean();
@@ -104,7 +108,8 @@ public class UserRestApiController {
 			emailSenderService.sendEmail(mailMessage);
 		}
 
-		return new ResponseEntity<>("Plz check the Email to confim your account", HttpStatus.OK);
+//		return new ResponseEntity<>("Plz check the Email to confim your account", HttpStatus.OK);
+		return "{\"success\":1}";
 	}
 
 	@GetMapping("/confirm-account")
