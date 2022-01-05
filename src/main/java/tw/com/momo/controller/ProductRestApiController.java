@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,23 +31,25 @@ public class ProductRestApiController {
 		UserRepository userRepository;
 		
 		@GetMapping("/product")
+		@CrossOrigin
 		 public ResponseEntity<?> read() {
 			Iterable<ProductBean> products = productRepository.findAll();
 			
 			return ResponseEntity.ok(products);
 		}
 		
-		@GetMapping("/products")
-		 public ResponseEntity<?> reads() {
-			UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			UserBean user = userRepository.findByUsername(userDetails.getUsername());
-
-			
-			return ResponseEntity.ok(null);
-		}
+//		@GetMapping("/products")
+//		 public ResponseEntity<?> reads() {
+//			UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//			UserBean user = userRepository.findByUsername(userDetails.getUsername());
+//
+//			
+//			return ResponseEntity.ok(null);
+//		}
 		
 		@PostMapping("/product")
-		public ResponseEntity<?> insert(@RequestBody ProductDto productDto) {
+		@CrossOrigin
+		public ProductBean insert(@RequestBody ProductDto productDto) {
 			
 			UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			UserBean user = userRepository.findByUsername(userDetails.getUsername());
@@ -60,7 +63,7 @@ public class ProductRestApiController {
 
 				productRepository.save(product);
 			
-				return new ResponseEntity<>(productDto.getName()+"商品已經建立", HttpStatus.OK);
+				return product;
 		}
 		
 		@PutMapping("/products/{id}")
