@@ -38,14 +38,14 @@ public class ProductRestApiController {
 			return ResponseEntity.ok(products);
 		}
 		
-//		@GetMapping("/products")
-//		 public ResponseEntity<?> reads() {
-//			UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//			UserBean user = userRepository.findByUsername(userDetails.getUsername());
-//
-//			
-//			return ResponseEntity.ok(null);
-//		}
+		@GetMapping("/products")
+		 public ResponseEntity<?> reads() {
+			UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			UserBean user = userRepository.findByUsername(userDetails.getUsername());
+
+			
+			return ResponseEntity.ok(null);
+		}
 		
 		@PostMapping("/product")
 		@CrossOrigin
