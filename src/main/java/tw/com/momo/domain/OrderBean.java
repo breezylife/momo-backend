@@ -20,15 +20,23 @@ public class OrderBean {
 	
 	@ManyToOne(targetEntity = UserBean.class)
 	@JoinColumn(name = "userid", referencedColumnName = "id", nullable = false)
-	private UserBean user;
+	private UserBean userBean;
 
 	public OrderBean() {
 		setuptime = new Date();
 	}
 	
 	public OrderBean(UserBean user) {
-		this.user = user;
+		this.userBean = user;
 		setuptime = new Date();
+	}
+
+	public UserBean getUserBean() {
+		return userBean;
+	}
+
+	public void setUserBean(UserBean userBean) {
+		this.userBean = userBean;
 	}
 
 	@Id

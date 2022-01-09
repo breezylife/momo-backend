@@ -33,20 +33,22 @@ public class ProductRestApiController {
 		@GetMapping("/product")
 		@CrossOrigin
 		 public ResponseEntity<?> read() {
-			Iterable<ProductBean> products = productRepository.findAll();
+			UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			UserBean user = userRepository.findByUsername(userDetails.getUsername());
+			Iterable<ProductBean> products = productRepository.findAllByUserBean(user);
 			
 			return ResponseEntity.ok(products);
 		}
 		
-		@GetMapping("/products")
-		 public ResponseEntity<?> reads() {
-			UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			UserBean user = userRepository.findByUsername(userDetails.getUsername());
-
-			
-			return ResponseEntity.ok(null);
-		}
-		
+//		@GetMapping("/products")
+//		 public ResponseEntity<?> reads() {
+//			UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//			UserBean user = userRepository.findByUsername(userDetails.getUsername());
+//
+//			
+//			return ResponseEntity.ok(null);
+//		}
+//		
 		@PostMapping("/product")
 		@CrossOrigin
 		public ProductBean insert(@RequestBody ProductDto productDto) {

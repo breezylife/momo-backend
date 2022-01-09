@@ -41,7 +41,7 @@ public class OrderRepositoryController {
 	private OrderDetailRepository orderDetailRepository;
 	
 	
-	@GetMapping(path = "/order")
+	@GetMapping(path = "/orders")
 	@CrossOrigin
 	 public ResponseEntity<?> read() {
 		Iterable<OrderDetailBean> orders = orderDetailRepository.findAll();
@@ -59,10 +59,6 @@ public class OrderRepositoryController {
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserBean user = userRepository.findByUsername(userDetails.getUsername());
 		 
-		
-		
-		
-		
 		OrderBean newoder = new OrderBean(user);
 		newoder.setTotal(order.getTotal());
 		newoder.setPayment(order.getPayment());
