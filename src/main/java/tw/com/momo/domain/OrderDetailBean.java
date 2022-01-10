@@ -4,7 +4,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,38 +15,20 @@ import javax.persistence.Table;
 @Table(name = "orderdetail")
 public class OrderDetailBean {
 	
-	@ManyToOne(targetEntity = ProductBean.class, fetch = FetchType.EAGER)
+	@ManyToOne(targetEntity = ProductBean.class)
 	@JoinColumn(name = "productsid", nullable = false)
-	private ProductBean productBean;
+	private ProductBean product;
 	
-	@ManyToOne(targetEntity = OrderBean.class, fetch = FetchType.EAGER)
+	@ManyToOne(targetEntity = OrderBean.class)
 	@JoinColumn(name = "ordersid", nullable = false)
-	private OrderBean orderBean;
+	private OrderBean order;
 	
 	public OrderDetailBean() {
-		setuptime = new Date();
 	}
 	
 	public OrderDetailBean(OrderBean order, ProductBean product) {
-		this.orderBean = order;
-		this.productBean = product;
-		setuptime = new Date();
-	}
-
-	public ProductBean getProductBean() {
-		return productBean;
-	}
-
-	public void setProductBean(ProductBean productBean) {
-		this.productBean = productBean;
-	}
-
-	public OrderBean getOrderBean() {
-		return orderBean;
-	}
-
-	public void setOrderBean(OrderBean orderBean) {
-		this.orderBean = orderBean;
+		this.order = order;
+		this.product = product;
 	}
 
 	@Id
@@ -55,15 +36,12 @@ public class OrderDetailBean {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(name = "SETUPTIME")
-	private Date setuptime;
-	
-	@Column(name = "QUANTITY")
-	private Integer quantity;
+	@Column(name = "NUM")
+	private Integer num;
 
 	@Override
 	public String toString() {
-		return "OrderDetailBean [id=" + id + ", setuptime=" + setuptime + ", quantity=" + quantity + "]";
+		return "OrderDetailBean [id=" + id + ", quantity=" + num + "]";
 	}
 
 	public Integer getId() {
@@ -74,20 +52,27 @@ public class OrderDetailBean {
 		this.id = id;
 	}
 
-	public Date getSetuptime() {
-		return setuptime;
+	public ProductBean getProduct() {
+		return product;
 	}
 
-	public void setSetuptime(Date setuptime) {
-		this.setuptime = setuptime;
+	public void setProduct(ProductBean product) {
+		this.product = product;
 	}
 
-	public Integer getQuantity() {
-		return quantity;
+	public OrderBean getOrder() {
+		return order;
 	}
 
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
+	public void setOrder(OrderBean order) {
+		this.order = order;
 	}
-	
+
+	public Integer getNum() {
+		return num;
+	}
+
+	public void setNum(Integer num) {
+		this.num = num;
+	}
 }

@@ -1,13 +1,47 @@
 package tw.com.momo.service;
 
+import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import tw.com.momo.dao.ProductRepository;
 import tw.com.momo.domain.ProductBean;
 
 @Service
-public interface ProductRepositoryService{
+public class ProductRepositoryService{
+	@Autowired
+	private ProductRepository productRepository;
+	
+	public ProductBean postProduct(ProductBean prod) {
+		if(prod!=null) {
+			return productRepository.save(prod);
+		}else {
+			return null;
+		}
+	}
+	
+	public List<ProductBean> searchProduct(String keyword) {
+		if(keyword!=null && keyword.length()!=0) {
+			keyword = "%"+keyword+"%";
+			return productRepository.findByNameLike(keyword);
+		}else {
+			 return productRepository.findAll();
+		}
+	}
+	
+	//0109新增
+	public ProductBean remove(Integer id) {
+		if(id!=null) {
+			Optional<ProductBean> optional = productRepository.findById(id);
+			if(optional.isPresent()) {
+				ProductBean remove = optional.get();
+				remove.setStatus(0);
+				return productRepository.save(remove);
+			}
+		}
+		return null;
+	}
 	
 }

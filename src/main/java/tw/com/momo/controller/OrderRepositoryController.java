@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,15 +51,13 @@ public class OrderRepositoryController {
 		return ResponseEntity.ok(orders);
 	}
 	
-	
-	@PostMapping(path = "/order")
+	@PostMapping(path = "/neworder")
 	public ResponseEntity<?> createNewOrder(@RequestBody OrderDto order) {
 		List<ProductBean> products = order.getProducts();
-		Integer total = 0;
 		
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserBean user = userRepository.findByUsername(userDetails.getUsername());
-		 
+		
 		OrderBean newoder = new OrderBean(user);
 		newoder.setTotal(order.getTotal());
 		newoder.setPayment(order.getPayment());
@@ -81,11 +80,14 @@ public class OrderRepositoryController {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PutMapping(path = "/next")
-	public void nextStatus(@RequestBody OrderDto order) {
-		
-		orderRepositoryService.nextStep(null);
+	//0109新增
+	@PutMapping(path = "/next/{id}")
+	public ResponseEntity<?> nextStatus(@PathVariable Integer id, @RequestBody OrderDto order) {
+		OrderBean result = orderRepositoryService.nextStep(id);
+		if(result!=null) {
+			return ResponseEntity.ok().body(result);
+		}
+		return ResponseEntity.notFound().build();
 	}
-	
 
 }

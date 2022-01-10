@@ -24,7 +24,7 @@ public class UserBean {
 	private String address;
 	private String username;
 	private String userphoto;
-	private boolean isEnabled;
+	private boolean isenabled;
 	
 	@Override
 	public String toString() {
@@ -105,11 +105,11 @@ public class UserBean {
 		this.userphoto = userphoto;
 	}
 
-	public boolean isEnabled() {
-		return isEnabled;
+	public boolean isenabled() {
+		return isenabled;
 	}
 
-	public void setEnabled(boolean isEnabled) {
-		this.isEnabled = isEnabled;
+	public void setEnabled(boolean isenabled) {
+		this.isenabled = isenabled;
 	}
 }

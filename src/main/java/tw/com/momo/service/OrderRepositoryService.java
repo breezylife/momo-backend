@@ -30,6 +30,7 @@ public class OrderRepositoryService {
 		return result;
 	}
 	
+	//0109新增
 	//訂單狀態為1的話變成2,2的話變成3
 	//3的話不會改變
 	public OrderBean nextStep(Integer orderid) {

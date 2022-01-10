@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -29,8 +30,12 @@ public class ProductBean {
 	private String description;
 	private String category;
 	
+	//0109新增
+	@Column(name = "state", nullable = false, length = 11)
+	private Integer state;
+	
 	@Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
+    private Date createddate;
 
     @ManyToOne(targetEntity = UserBean.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "sellerid")
@@ -42,8 +47,14 @@ public class ProductBean {
 	
 	public ProductBean(UserBean user) {
         this.userBean = user;
-        createdDate = new Date();
+        createddate = new Date();
     }
+
+	@Override
+	public String toString() {
+		return "ProductBean [id=" + id + ", name=" + name + ", price=" + price + ", stock=" + stock + ", description="
+				+ description + ", category=" + category + ", state=" + state + ", createdDate=" + createddate + "]";
+	}
 
 	public Integer getId() {
 		return id;
@@ -94,11 +105,11 @@ public class ProductBean {
 	}
 
 	public Date getCreatedDate() {
-		return createdDate;
+		return createddate;
 	}
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
+	public void setCreatedDate(Date createddate) {
+		this.createddate = createddate;
 	}
 
 	public UserBean getUserBean() {
@@ -107,5 +118,13 @@ public class ProductBean {
 
 	public void setUserBean(UserBean userBean) {
 		this.userBean = userBean;
+	}
+
+	public Integer getStatus() {
+		return state;
+	}
+
+	public void setStatus(Integer state) {
+		this.state = state;
 	}
 }

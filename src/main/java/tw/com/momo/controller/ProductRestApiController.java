@@ -1,5 +1,8 @@
 package tw.com.momo.controller;
 
+import java.net.URI;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +32,8 @@ public class ProductRestApiController {
 		ProductRepository productRepository;
 		@Autowired
 		UserRepository userRepository;
+		@Autowired
+		ProductRepositoryService productRepositoryService;
 		
 		@GetMapping("/product")
 		@CrossOrigin
@@ -57,9 +62,10 @@ public class ProductRestApiController {
 //			return ResponseEntity.ok(null);
 //		}
 //		
+		
 		@PostMapping("/product")
 		@CrossOrigin
-		public ProductBean insert(@RequestBody ProductDto productDto) {
+		public ResponseEntity<?> insert(@RequestBody ProductDto productDto) {
 			
 			UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			UserBean user = userRepository.findByUsername(userDetails.getUsername());
@@ -70,23 +76,60 @@ public class ProductRestApiController {
 				product.setDescription(productDto.getDescription());
 				product.setCategory(productDto.getCategory());
 				product.setStock(productDto.getStock());
-
+				
+				//0109新增
+				product.setStatus(1);
 				productRepository.save(product);
-			
-				return product;
-		}
+				
+				URI uri = URI.create("/product"+product.getId());
+				
+//				return product;
+//				return new ResponseEntity<>(productDto.getName()+"商品已經建立", HttpStatus.OK);
+				return ResponseEntity.created(uri).body(product);
+		}	
+//		@PostMapping("/product")
+//		@CrossOrigin
+//		public ProductBean insert(@RequestBody ProductDto productDto) {
+//			
+//			UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//			UserBean user = userRepository.findByUsername(userDetails.getUsername());
+//			
+//				ProductBean product = new ProductBean(user);
+//				product.setName(productDto.getName());
+//				product.setPrice(productDto.getPrice());
+//				product.setDescription(productDto.getDescription());
+//				product.setCategory(productDto.getCategory());
+//				product.setStock(productDto.getStock());
+//
+//				productRepository.save(product);
+//			
+//				return product;
+//		}
 		
-		@PutMapping("/products/{id}")
-		public ResponseEntity<?> update(@PathVariable("id") Integer id,
-				@RequestBody ProductBean bean) {
-			return null;
-//			ProductBean update = productRepositoryService.update(bean);
-//			if(update!=null) {
-//				return ResponseEntity.ok(update);
-//			} else {
-//				return ResponseEntity.notFound().build();
-//			}
-		}
+			//關鍵字搜尋
+				@GetMapping("/products/{keyword}")
+				@CrossOrigin
+				 public ResponseEntity<?> search(@PathVariable String keyword) {
+					List<ProductBean> products = productRepositoryService.searchProduct(keyword);
+					if(products!=null) {
+						System.out.println(products);
+						
+						return ResponseEntity.ok().body(products);
+					}
+					return ResponseEntity.notFound().build();
+				}
+				
+				//商品下架 0907新增
+				@PutMapping("/product/remove/{id}")
+				@CrossOrigin
+				public ResponseEntity<?> removeProd(@PathVariable Integer id){
+					ProductBean remove = productRepositoryService.remove(id);
+					if(remove!=null) {
+						return ResponseEntity.ok().body(remove);
+					}
+					
+					return ResponseEntity.notFound().build();
+				}
 		
 //		@GetMapping("/products/{id}")
 //		public ResponseEntity<?> select(@PathVariable("id") Integer id) {

@@ -16,7 +16,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="confirmationTokenBean")
+@Table(name="confirmationtokenbean")
 public class ConfirmationTokenBean {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
