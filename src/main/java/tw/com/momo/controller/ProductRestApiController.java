@@ -2,6 +2,7 @@ package tw.com.momo.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,12 +36,20 @@ public class ProductRestApiController {
 		@Autowired
 		ProductRepositoryService productRepositoryService;
 		
-		@GetMapping("/product")
+		@GetMapping("/products")
 		@CrossOrigin
-		 public ResponseEntity<?> read() {
+		 public ResponseEntity<?> products() {
 			Iterable<ProductBean> products = productRepository.findAll();
 			
 			return ResponseEntity.ok(products);
+		}
+		
+		@GetMapping("/product/{id}")
+		@CrossOrigin
+		 public ResponseEntity<?> product(@PathVariable Integer id) {
+			Optional<ProductBean> product = productRepository.findById(id);
+			
+			return ResponseEntity.ok(product);
 		}
 		
 		@GetMapping("/myproduct")
