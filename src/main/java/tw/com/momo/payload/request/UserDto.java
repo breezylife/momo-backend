@@ -1,0 +1,37 @@
+package tw.com.momo.payload.request;
+
+import java.util.Date;
+
+public class UserDto {
+
+	private String gender;
+	private Date birthday;
+	private String phone;
+	private String address;
+//	private String userphoto;
+	
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public Date getBirthday() {
+		return birthday;
+	}
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+}
