@@ -27,6 +27,7 @@ public class ProductBean {
 	private String name;
 	private int price;
 	private int stock;
+	private Integer num;
 	private String description;
 	private String category;
 	
@@ -119,7 +120,13 @@ public class ProductBean {
 	public void setUserBean(UserBean userBean) {
 		this.userBean = userBean;
 	}
+	public Integer getNum() {
+		return num;
+	}
 
+	public void setNum(Integer num) {
+		this.num = num;
+	}
 	public Integer getStatus() {
 		return state;
 	}

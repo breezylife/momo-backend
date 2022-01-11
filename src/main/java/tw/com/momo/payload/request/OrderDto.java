@@ -12,6 +12,7 @@ public class OrderDto {
 	private Integer payment;
 	private Integer status;
 	private Integer shippingadd;
+	
 	private String email;
 	private List<ProductBean> products;
 	

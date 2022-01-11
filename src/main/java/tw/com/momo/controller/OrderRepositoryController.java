@@ -45,15 +45,28 @@ public class OrderRepositoryController {
 	@GetMapping(path = "/order")
 	@CrossOrigin
 	 public ResponseEntity<?> read() {
-		Iterable<OrderDetailBean> orders = orderDetailRepository.findAll();
+		Iterable<OrderBean> orders = orderRepository.findAll();
 //		Iterable<OrderBean> orders = orderRepository.findAll();
 		
 		return ResponseEntity.ok(orders);
 	}
 	
+	@GetMapping(path = "/myorder")
+	@CrossOrigin
+	 public ResponseEntity<?> myorder() {
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserBean user = userRepository.findByUsername(userDetails.getUsername());
+		
+		Iterable<OrderBean> myorderdetails = orderRepository.findByUserBean(user);
+		return ResponseEntity.ok(myorderdetails);
+	}
+	
 	@PostMapping(path = "/order")
+	@CrossOrigin
 	public ResponseEntity<?> createNewOrder(@RequestBody OrderDto order) {
 		List<ProductBean> products = order.getProducts();
+		
+		//get user
 		
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserBean user = userRepository.findByUsername(userDetails.getUsername());
@@ -64,17 +77,16 @@ public class OrderRepositoryController {
 		newoder.setShipping(order.getShipping());
 		newoder.setStatus(1);
 //		newoder.setShippingadd(order.getShippingadd());
-		
+
 		OrderBean result = orderRepositoryService.createOrder(newoder);
-		for(ProductBean product : products) {
-			
-			OrderDetailBean orderDetail = new OrderDetailBean(newoder,product);
-			
+		for (ProductBean product : products) {
+			OrderDetailBean orderDetail = new OrderDetailBean(newoder, product);
+			orderDetail.setNum(product.getNum());
 			orderDetailRepository.save(orderDetail);
+//			System.out.println(orderDetail);
 		}
-		
-		if(result!=null) {
-			URI uri = URI.create("/neworder"+result.getId());
+		if (result != null) {
+			URI uri = URI.create("/neworder" + result.getId());
 			return ResponseEntity.created(uri).body(result);
 		}
 		return ResponseEntity.noContent().build();
