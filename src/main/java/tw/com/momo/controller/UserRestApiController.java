@@ -177,7 +177,7 @@ public class UserRestApiController {
 		// 修改密碼
 		@PostMapping("/password")
 		@CrossOrigin
-		public ResponseEntity<?> changePassword(@RequestBody PasswordDto passwordDto){
+		public String changePassword(@RequestBody PasswordDto passwordDto){
 			System.out.println(passwordDto);
 			UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			UserBean user = userRepository.findByUsername(userDetails.getUsername());
@@ -186,16 +186,19 @@ public class UserRestApiController {
 				if(passwordDto.getPassword().equals(passwordDto.getPassword2())) {
 					user.setPassword(passwordEncoder.encode(passwordDto.getPassword()));
 					userRepository.save(user);
-					return new ResponseEntity<>("OKOK", HttpStatus.OK);
+//					return new ResponseEntity<>("OKOK", HttpStatus.OK);
+					return "{\"success\":1}";
 				}else {
 					System.out.println("新密碼不一致");
-					return new ResponseEntity<>("新密碼不一致", HttpStatus.NOT_FOUND);
+//					return new ResponseEntity<>("新密碼不一致", HttpStatus.NOT_FOUND);
+					return "{\"error\":2}";
 				}
 				
 			}else {
 				System.out.println("密碼輸入錯誤"+passwordEncoder.matches(user.getPassword(), passwordEncoder.encode(passwordDto.getOldPassword())));
 				System.out.println(user.getPassword()+passwordDto.getOldPassword());
-				return new ResponseEntity<>("密碼輸入錯誤", HttpStatus.NOT_FOUND);
+//				return new ResponseEntity<>("密碼輸入錯誤", HttpStatus.NOT_FOUND);
+				return "{\"error\":1}";
 			}
 		
 			
