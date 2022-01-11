@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import tw.com.momo.dao.PictureRepository;
 import tw.com.momo.dao.ProductRepository;
 import tw.com.momo.dao.UserRepository;
+import tw.com.momo.domain.PictureBean;
 import tw.com.momo.domain.ProductBean;
 import tw.com.momo.domain.UserBean;
 import tw.com.momo.payload.request.ProductDto;
@@ -35,6 +37,8 @@ public class ProductRestApiController {
 		UserRepository userRepository;
 		@Autowired
 		ProductRepositoryService productRepositoryService;
+		@Autowired
+		PictureRepository pictureRepository;
 		
 		@GetMapping("/product")
 		@CrossOrigin
@@ -92,6 +96,13 @@ public class ProductRestApiController {
 				
 				URI uri = URI.create("/product"+product.getId());
 				
+				List<String> url= productDto.getUrl();
+				for(String pic : url) {
+
+					PictureBean pictureBean = new PictureBean(product , pic);
+					
+					pictureRepository.save(pictureBean);
+				}
 //				return product;
 //				return new ResponseEntity<>(productDto.getName()+"商品已經建立", HttpStatus.OK);
 				return ResponseEntity.created(uri).body(product);
