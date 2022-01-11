@@ -6,7 +6,7 @@ public class SignUpDto {
 	private String email;
 	private String password;
 	private String gender;
-	private Date birthday;
+	private String birthday;
 	private String phone;
 	private String address;
 	private String username;
@@ -35,10 +35,10 @@ public class SignUpDto {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public Date getBirthday() {
+	public String getBirthday() {
 		return birthday;
 	}
-	public void setBirthday(Date birthday) {
+	public void setBirthday(String birthday) {
 		this.birthday = birthday;
 	}
 	public String getPhone() {

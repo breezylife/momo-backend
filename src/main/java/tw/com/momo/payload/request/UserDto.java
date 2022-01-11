@@ -5,7 +5,7 @@ import java.util.Date;
 public class UserDto {
 
 	private String gender;
-	private Date birthday;
+	private String birthday;
 	private String phone;
 	private String address;
 //	private String userphoto;
@@ -16,10 +16,10 @@ public class UserDto {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public Date getBirthday() {
+	public String getBirthday() {
 		return birthday;
 	}
-	public void setBirthday(Date birthday) {
+	public void setBirthday(String birthday) {
 		this.birthday = birthday;
 	}
 	public String getPhone() {
