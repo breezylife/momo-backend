@@ -36,7 +36,7 @@ public class ProductRestApiController {
 		@Autowired
 		ProductRepositoryService productRepositoryService;
 		
-		@GetMapping("/products")
+		@GetMapping("/product")
 		@CrossOrigin
 		 public ResponseEntity<?> products() {
 			Iterable<ProductBean> products = productRepository.findAll();
@@ -116,7 +116,7 @@ public class ProductRestApiController {
 //		}
 		
 			//關鍵字搜尋
-				@GetMapping("/products/{keyword}")
+				@GetMapping("/keyword/{keyword}")
 				@CrossOrigin
 				 public ResponseEntity<?> search(@PathVariable String keyword) {
 					List<ProductBean> products = productRepositoryService.searchProduct(keyword);
@@ -129,7 +129,7 @@ public class ProductRestApiController {
 				}
 				
 				//商品下架 0907新增
-				@PutMapping("/product/remove/{id}")
+				@PutMapping("/product/state/{id}")
 				@CrossOrigin
 				public ResponseEntity<?> removeProd(@PathVariable Integer id){
 					ProductBean remove = productRepositoryService.remove(id);

@@ -32,18 +32,7 @@ public class CommentController {
 	@Autowired
 	private ProductRepository productRepository;
 	
-	
-	@DeleteMapping("/comments/{id}")
-	public ResponseEntity<?> delete(@PathVariable("id") Integer id){
-		
-		Optional<CommentBean> comm = commentRepository.findById(id);
-		CommentBean comment = comm.get();
-		commentRepository.deleteById(comment.getId());
-		
-		return new ResponseEntity<>("已刪除評論", HttpStatus.OK);
-	}
-	
-	@GetMapping("/comments/{id}")
+	@GetMapping("/comment/{id}")
 	public ResponseEntity<?> select(@PathVariable("id") Integer id){
 	
 		Iterable<CommentBean> comments = commentRepository.findAllByProductsid(id);
@@ -70,6 +59,15 @@ public class CommentController {
 		
 			return new ResponseEntity<>("已送出評論", HttpStatus.OK);
 	
+	}
+	@DeleteMapping("/comment/{id}")
+	public ResponseEntity<?> delete(@PathVariable("id") Integer id){
+		
+		Optional<CommentBean> comm = commentRepository.findById(id);
+		CommentBean comment = comm.get();
+		commentRepository.deleteById(comment.getId());
+		
+		return new ResponseEntity<>("已刪除評論", HttpStatus.OK);
 	}
 	
 }

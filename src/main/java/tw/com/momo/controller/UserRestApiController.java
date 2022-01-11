@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -70,10 +71,18 @@ public class UserRestApiController {
 //		modelAndView.setViewName("register");
 //		return modelAndView;
 //	}
-
-	@PostMapping("/register")
+	@GetMapping("/user")
 	@CrossOrigin
-	public String registerUser(@RequestBody SignUpDto signUpDto) {
+	public ResponseEntity<?> readuser() {
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserBean user = userRepository.findByUsername(userDetails.getUsername());
+//		System.out.println("123123asdf"+user);
+		return ResponseEntity.ok(user);
+	}
+
+	@PostMapping("/user")
+	@CrossOrigin
+	public String create(@RequestBody SignUpDto signUpDto) {
 		
 		if (userRepository.existsByUsername(signUpDto.getUsername())) {
 //			return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);\
@@ -115,6 +124,7 @@ public class UserRestApiController {
 	}
 
 	@GetMapping("/confirm-account")
+	@CrossOrigin
 	public ResponseEntity<?> confirmUserAccount(@RequestParam("token") String confirmationToken) {
 		ConfirmationTokenBean token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
 		
@@ -146,6 +156,7 @@ public class UserRestApiController {
 	
 	// 修改會員資料
 		@PutMapping("/user")
+		@CrossOrigin
 		public ResponseEntity<?> update(@RequestBody UserDto userDto) {
 			
 			UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -159,12 +170,13 @@ public class UserRestApiController {
 			
 			userRepository.save(userBean);
 
-			return new ResponseEntity<>("會員資料修改成功", HttpStatus.OK);
-			
+//			return new ResponseEntity<>("會員資料修改成功", HttpStatus.OK);
+			return ResponseEntity.ok(userBean);
 		}
 		
 		// 修改密碼
-		@PostMapping("/userpassword")
+		@PostMapping("/password")
+		@CrossOrigin
 		public ResponseEntity<?> changePassword(@RequestBody PasswordDto passwordDto){
 			System.out.println(passwordDto);
 			UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

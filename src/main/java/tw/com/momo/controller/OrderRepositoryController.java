@@ -42,7 +42,7 @@ public class OrderRepositoryController {
 	private OrderDetailRepository orderDetailRepository;
 	
 	
-	@GetMapping(path = "/orders")
+	@GetMapping(path = "/order")
 	@CrossOrigin
 	 public ResponseEntity<?> read() {
 		Iterable<OrderDetailBean> orders = orderDetailRepository.findAll();
@@ -51,7 +51,7 @@ public class OrderRepositoryController {
 		return ResponseEntity.ok(orders);
 	}
 	
-	@PostMapping(path = "/neworder")
+	@PostMapping(path = "/order")
 	public ResponseEntity<?> createNewOrder(@RequestBody OrderDto order) {
 		List<ProductBean> products = order.getProducts();
 		
@@ -81,7 +81,7 @@ public class OrderRepositoryController {
 	}
 	
 	//0109新增
-	@PutMapping(path = "/next/{id}")
+	@PutMapping(path = "/order/{id}")
 	public ResponseEntity<?> nextStatus(@PathVariable Integer id, @RequestBody OrderDto order) {
 		OrderBean result = orderRepositoryService.nextStep(id);
 		if(result!=null) {
