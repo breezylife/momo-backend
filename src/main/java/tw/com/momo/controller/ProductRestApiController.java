@@ -90,7 +90,6 @@ public class ProductRestApiController {
 				product.setCategory(productDto.getCategory());
 				product.setStock(productDto.getStock());
 				
-				//0109新增
 				product.setStatus(1);
 				productRepository.save(product);
 				
@@ -98,9 +97,7 @@ public class ProductRestApiController {
 				
 				List<String> url= productDto.getUrl();
 				for(String pic : url) {
-
 					PictureBean pictureBean = new PictureBean(product , pic);
-					
 					pictureRepository.save(pictureBean);
 				}
 //				return product;
