@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,9 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import tw.com.momo.dao.PictureRepository;
+import tw.com.momo.dao.ProdspecRepository;
 import tw.com.momo.dao.ProductRepository;
 import tw.com.momo.dao.UserRepository;
 import tw.com.momo.domain.PictureBean;
+import tw.com.momo.domain.ProdspecBean;
 import tw.com.momo.domain.ProductBean;
 import tw.com.momo.domain.UserBean;
 import tw.com.momo.payload.request.ProductDto;
@@ -38,6 +39,8 @@ public class ProductRestApiController {
 	ProductRepositoryService productRepositoryService;
 	@Autowired
 	PictureRepository pictureRepository;
+	@Autowired
+	ProdspecRepository prodspecRepository;
 
 	@GetMapping("/product")
 	@CrossOrigin
@@ -98,6 +101,12 @@ public class ProductRestApiController {
 		for (String pic : url) {
 			PictureBean pictureBean = new PictureBean(product, pic);
 			pictureRepository.save(pictureBean);
+		}
+		
+		List<ProdspecBean> specs = productDto.getSpecs();
+		for (ProdspecBean spec : specs) {
+			ProdspecBean prodspecBean = new ProdspecBean(product);
+			prodspecRepository.save(prodspecBean);
 		}
 //				return product;
 //				return new ResponseEntity<>(productDto.getName()+"商品已經建立", HttpStatus.OK);

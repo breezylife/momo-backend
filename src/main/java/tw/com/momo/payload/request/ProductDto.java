@@ -2,6 +2,9 @@ package tw.com.momo.payload.request;
 
 import java.util.List;
 
+import tw.com.momo.domain.PictureBean;
+import tw.com.momo.domain.ProdspecBean;
+
 public class ProductDto {
 	private String name;
 	private int price;
@@ -9,6 +12,7 @@ public class ProductDto {
 	private String description;
 	private String category;
 	private List<String> url;
+	private List<ProdspecBean> specs;
 
 	
 	public List<String> getUrl() {
@@ -57,5 +61,13 @@ public class ProductDto {
 
 	public void setCategory(String category) {
 		this.category = category;
+	}
+
+	public List<ProdspecBean> getSpecs() {
+		return specs;
+	}
+
+	public void setSpecs(List<ProdspecBean> specs) {
+		this.specs = specs;
 	}
 }
