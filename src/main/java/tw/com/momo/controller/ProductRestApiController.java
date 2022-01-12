@@ -81,7 +81,6 @@ public class ProductRestApiController {
 	@PostMapping("/product")
 	@CrossOrigin
 	public ResponseEntity<?> insert(@RequestBody ProductDto productDto) {
-
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserBean user = userRepository.findByUsername(userDetails.getUsername());
 
@@ -99,17 +98,18 @@ public class ProductRestApiController {
 
 		List<String> url = productDto.getUrl();
 		for (String pic : url) {
+			System.out.println(pic);
 			PictureBean pictureBean = new PictureBean(product, pic);
 			pictureRepository.save(pictureBean);
 		}
 		
-		List<ProdspecBean> specs = productDto.getSpecs();
-		for (ProdspecBean spec : specs) {
-			ProdspecBean prodspecBean = new ProdspecBean(product);
-			prodspecBean.setSpec(spec.getSpec());
-			prodspecBean.setStock(spec.getStock());
-			prodspecRepository.save(prodspecBean);
-		}
+//		List<ProdspecBean> specs = productDto.getSpecs();
+//		for (ProdspecBean spec : specs) {
+//			ProdspecBean prodspecBean = new ProdspecBean(product);
+//			prodspecBean.setSpec(spec.getSpec());
+//			prodspecBean.setStock(spec.getStock());
+//			prodspecRepository.save(prodspecBean);
+//		}
 //				return product;
 //				return new ResponseEntity<>(productDto.getName()+"商品已經建立", HttpStatus.OK);
 		return ResponseEntity.created(uri).body(product);
