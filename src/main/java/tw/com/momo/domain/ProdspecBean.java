@@ -19,6 +19,8 @@ public class ProdspecBean {
 	@Column(name = "SPEC")
 	private String spec;
 	
+	@Column(name = "STOCK")
+	private Integer stock;
 //	@Column(name = "PRODUCTSID")
 //	private Integer productsid;
 
@@ -63,6 +65,15 @@ public class ProdspecBean {
 		this.spec = spec;
 	}
 
+	public Integer getStock() {
+		return stock;
+	}
+
+	public void setStock(Integer stock) {
+		this.stock = stock;
+	}
+	
+	
 //	public Integer getProductsid() {
 //		return productsid;
 //	}

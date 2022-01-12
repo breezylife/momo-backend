@@ -106,6 +106,8 @@ public class ProductRestApiController {
 		List<ProdspecBean> specs = productDto.getSpecs();
 		for (ProdspecBean spec : specs) {
 			ProdspecBean prodspecBean = new ProdspecBean(product);
+			prodspecBean.setSpec(spec.getSpec());
+			prodspecBean.setStock(spec.getStock());
 			prodspecRepository.save(prodspecBean);
 		}
 //				return product;
