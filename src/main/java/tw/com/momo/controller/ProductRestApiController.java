@@ -27,45 +27,44 @@ import tw.com.momo.domain.UserBean;
 import tw.com.momo.payload.request.ProductDto;
 import tw.com.momo.service.ProductRepositoryService;
 
-
 @RestController
 @RequestMapping("/api")
 public class ProductRestApiController {
-		@Autowired
-		ProductRepository productRepository;
-		@Autowired
-		UserRepository userRepository;
-		@Autowired
-		ProductRepositoryService productRepositoryService;
-		@Autowired
-		PictureRepository pictureRepository;
-		
-		@GetMapping("/product")
-		@CrossOrigin
-		 public ResponseEntity<?> products() {
-			Iterable<ProductBean> products = productRepository.findAll();
-			
-			return ResponseEntity.ok(products);
-		}
-		
-		@GetMapping("/product/{id}")
-		@CrossOrigin
-		 public ResponseEntity<?> product(@PathVariable Integer id) {
-			Optional<ProductBean> product = productRepository.findById(id);
-			
-			return ResponseEntity.ok(product);
-		}
-		
-		@GetMapping("/myproduct")
-		@CrossOrigin
-		 public ResponseEntity<?> myproduct() {
-			UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			UserBean user = userRepository.findByUsername(userDetails.getUsername());
-			Iterable<ProductBean> products = productRepository.findAllByUserBean(user);
-			
-			return ResponseEntity.ok(products);
-		}
-		
+	@Autowired
+	ProductRepository productRepository;
+	@Autowired
+	UserRepository userRepository;
+	@Autowired
+	ProductRepositoryService productRepositoryService;
+	@Autowired
+	PictureRepository pictureRepository;
+
+	@GetMapping("/product")
+	@CrossOrigin
+	public ResponseEntity<?> products() {
+		Iterable<ProductBean> products = productRepository.findAll();
+
+		return ResponseEntity.ok(products);
+	}
+
+	@GetMapping("/product/{id}")
+	@CrossOrigin
+	public ResponseEntity<?> product(@PathVariable Integer id) {
+		Optional<ProductBean> product = productRepository.findById(id);
+
+		return ResponseEntity.ok(product);
+	}
+
+	@GetMapping("/myproduct")
+	@CrossOrigin
+	public ResponseEntity<?> myproduct() {
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserBean user = userRepository.findByUsername(userDetails.getUsername());
+		Iterable<ProductBean> products = productRepository.findAllByUserBean(user);
+
+		return ResponseEntity.ok(products);
+	}
+
 //		@GetMapping("/products")
 //		 public ResponseEntity<?> reads() {
 //			UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -75,35 +74,35 @@ public class ProductRestApiController {
 //			return ResponseEntity.ok(null);
 //		}
 //		
-		
-		@PostMapping("/product")
-		@CrossOrigin
-		public ResponseEntity<?> insert(@RequestBody ProductDto productDto) {
-			
-			UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			UserBean user = userRepository.findByUsername(userDetails.getUsername());
-			
-				ProductBean product = new ProductBean(user);
-				product.setName(productDto.getName());
-				product.setPrice(productDto.getPrice());
-				product.setDescription(productDto.getDescription());
-				product.setCategory(productDto.getCategory());
-				product.setStock(productDto.getStock());
-				
-				product.setStatus(1);
-				productRepository.save(product);
-				
-				URI uri = URI.create("/product"+product.getId());
-				
-				List<String> url= productDto.getUrl();
-				for(String pic : url) {
-					PictureBean pictureBean = new PictureBean(product , pic);
-					pictureRepository.save(pictureBean);
-				}
+
+	@PostMapping("/product")
+	@CrossOrigin
+	public ResponseEntity<?> insert(@RequestBody ProductDto productDto) {
+
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserBean user = userRepository.findByUsername(userDetails.getUsername());
+
+		ProductBean product = new ProductBean(user);
+		product.setName(productDto.getName());
+		product.setPrice(productDto.getPrice());
+		product.setDescription(productDto.getDescription());
+		product.setCategory(productDto.getCategory());
+		product.setStock(productDto.getStock());
+
+		product.setStatus(1);
+		productRepository.save(product);
+
+		URI uri = URI.create("/product" + product.getId());
+
+		List<String> url = productDto.getUrl();
+		for (String pic : url) {
+			PictureBean pictureBean = new PictureBean(product, pic);
+			pictureRepository.save(pictureBean);
+		}
 //				return product;
 //				return new ResponseEntity<>(productDto.getName()+"商品已經建立", HttpStatus.OK);
-				return ResponseEntity.created(uri).body(product);
-		}	
+		return ResponseEntity.created(uri).body(product);
+	}
 //		@PostMapping("/product")
 //		@CrossOrigin
 //		public ProductBean insert(@RequestBody ProductDto productDto) {
@@ -122,32 +121,41 @@ public class ProductRestApiController {
 //			
 //				return product;
 //		}
-		
-			//關鍵字搜尋
-				@GetMapping("/keyword/{keyword}")
-				@CrossOrigin
-				 public ResponseEntity<?> search(@PathVariable String keyword) {
-					List<ProductBean> products = productRepositoryService.searchProduct(keyword);
-					if(products!=null) {
-						System.out.println(products);
-						
-						return ResponseEntity.ok().body(products);
-					}
-					return ResponseEntity.notFound().build();
-				}
-				
-				//商品下架 0907新增
-				@PutMapping("/product/state/{id}")
-				@CrossOrigin
-				public ResponseEntity<?> removeProd(@PathVariable Integer id){
-					ProductBean remove = productRepositoryService.remove(id);
-					if(remove!=null) {
-						return ResponseEntity.ok().body(remove);
-					}
-					
-					return ResponseEntity.notFound().build();
-				}
-		
+
+	// 關鍵字搜尋
+	@GetMapping("/keyword/{keyword}")
+	@CrossOrigin
+	public ResponseEntity<?> search(@PathVariable String keyword) {
+
+		if (keyword.equals("all")) {
+			Iterable<ProductBean> products = productRepository.findAll();
+
+			return ResponseEntity.ok(products);
+		} else {
+
+			List<ProductBean> products = productRepositoryService.searchProduct(keyword);
+			if (products != null) {
+				System.out.println(products);
+
+				return ResponseEntity.ok().body(products);
+			}
+		}
+
+		return ResponseEntity.notFound().build();
+	}
+
+	// 商品下架 0907新增
+	@PutMapping("/product/state/{id}")
+	@CrossOrigin
+	public ResponseEntity<?> removeProd(@PathVariable Integer id) {
+		ProductBean remove = productRepositoryService.remove(id);
+		if (remove != null) {
+			return ResponseEntity.ok().body(remove);
+		}
+
+		return ResponseEntity.notFound().build();
+	}
+
 //		@GetMapping("/products/{id}")
 //		public ResponseEntity<?> select(@PathVariable("id") Integer id) {
 //			ProductBean bean = new ProductBean();
