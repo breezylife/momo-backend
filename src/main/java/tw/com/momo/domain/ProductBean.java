@@ -127,11 +127,11 @@ public class ProductBean {
 	public void setNum(Integer num) {
 		this.num = num;
 	}
-	public Integer getStatus() {
+	public Integer getState() {
 		return state;
 	}
 
-	public void setStatus(Integer state) {
+	public void setState(Integer state) {
 		this.state = state;
 	}
 }

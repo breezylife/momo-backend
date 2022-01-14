@@ -91,7 +91,7 @@ public class ProductRestApiController {
 		product.setCategory(productDto.getCategory());
 		product.setStock(productDto.getStock());
 
-		product.setStatus(1);
+		product.setState(1);
 		productRepository.save(product);
 
 		URI uri = URI.create("/product" + product.getId());
@@ -155,11 +155,11 @@ public class ProductRestApiController {
 		return ResponseEntity.notFound().build();
 	}
 
-	// 商品下架 0907新增
+	// 商品上下架 0114新增
 	@PutMapping("/product/state/{id}")
 	@CrossOrigin
 	public ResponseEntity<?> removeProd(@PathVariable Integer id) {
-		ProductBean remove = productRepositoryService.remove(id);
+		ProductBean remove = productRepositoryService.changeState(id);
 		if (remove != null) {
 			return ResponseEntity.ok().body(remove);
 		}
