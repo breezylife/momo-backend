@@ -1,9 +1,7 @@
 package tw.com.momo.controller;
 
 import java.net.URI;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
-
 import tw.com.momo.dao.OrderDetailRepository;
-import tw.com.momo.dao.OrderRepository;
-import tw.com.momo.dao.ProductRepository;
 import tw.com.momo.dao.UserRepository;
 import tw.com.momo.domain.OrderBean;
 import tw.com.momo.domain.OrderDetailBean;
@@ -38,11 +32,7 @@ public class OrderRepositoryController {
 	@Autowired
 	private UserRepository userRepository;
 
-	@Autowired
-	private OrderRepository orderRepository;
-
-	@Autowired
-	private ProductRepository productRepository;
+	
 
 	@Autowired
 	private OrderRepositoryService orderRepositoryService;
@@ -113,6 +103,8 @@ public class OrderRepositoryController {
 		for (ProductBean product : products) {
 			OrderDetailBean orderDetail = new OrderDetailBean(newoder, product);
 			orderDetail.setNum(product.getStock());
+			orderDetail.setPrname(product.getName());
+			orderDetail.setPrprice(product.getPrice());
 			orderDetailRepository.save(orderDetail);
 //			System.out.println(orderDetail);
 		}
