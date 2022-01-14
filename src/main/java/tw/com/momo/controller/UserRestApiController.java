@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,7 +27,9 @@ import tw.com.momo.domain.ConfirmationTokenBean;
 import tw.com.momo.domain.UserBean;
 import tw.com.momo.payload.request.LoginDto;
 import tw.com.momo.payload.request.OauthRequestDto;
+import tw.com.momo.payload.request.PasswordDto;
 import tw.com.momo.payload.request.SignUpDto;
+import tw.com.momo.payload.request.UserDto;
 import tw.com.momo.payload.response.JwtResponse;
 import tw.com.momo.service.EmailSenderService;
 import tw.com.momo.service.UserDetailsImpl;
@@ -113,6 +116,53 @@ public class UserRestApiController {
 
 //		return new ResponseEntity<>("Plz check the Email to confim your account", HttpStatus.OK);
 		return "{\"success\":1}";
+	}
+
+	// 修改會員資料
+	@PutMapping("/user")
+	@CrossOrigin
+	public ResponseEntity<?> update(@RequestBody UserDto userDto) {
+
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserBean userBean = userRepository.findByUsername(userDetails.getUsername());
+
+//				userBean.setPassword(passwordEncoder.encode(userDto.getPassword()));
+		userBean.setGender(userDto.getGender());
+		userBean.setBirthday(userDto.getBirthday());
+		userBean.setPhone(userDto.getPhone());
+		userBean.setAddress(userDto.getAddress());
+
+		userRepository.save(userBean);
+
+//		return new ResponseEntity<>("會員資料修改成功", HttpStatus.OK);
+		return ResponseEntity.ok(userBean);
+	}
+
+	// 修改密碼
+	@PostMapping("/userpassword")
+	@CrossOrigin
+	public String changePassword(@RequestBody PasswordDto passwordDto) {
+		System.out.println(passwordDto);
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserBean user = userRepository.findByUsername(userDetails.getUsername());
+
+		if (passwordEncoder.matches(passwordDto.getOldPassword(), user.getPassword())) {
+			if (passwordDto.getPassword().equals(passwordDto.getPassword2())) {
+				user.setPassword(passwordEncoder.encode(passwordDto.getPassword()));
+				userRepository.save(user);
+				return "{\"success\":1}";
+			} else {
+				System.out.println("新密碼不一致");
+				return "{\"error\":2}";
+			}
+
+		} else {
+			System.out.println("密碼輸入錯誤" + passwordEncoder.matches(user.getPassword(),
+					passwordEncoder.encode(passwordDto.getOldPassword())));
+			System.out.println(user.getPassword() + passwordDto.getOldPassword());
+			return "{\"error\":1}";
+		}
+
 	}
 
 	@PostMapping("/Oauth")
