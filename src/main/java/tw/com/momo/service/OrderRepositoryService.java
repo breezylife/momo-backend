@@ -13,32 +13,45 @@ import tw.com.momo.domain.OrderBean;
 @Service
 @Transactional
 public class OrderRepositoryService {
-	
+
 	@Autowired
 	private OrderRepository orderRepository;
-	
+
 	public List<OrderBean> select(Integer id) {
-		
+
 		return null;
 	}
-	
+
 	public OrderBean createOrder(OrderBean order) {
 		OrderBean result = null;
-		if(order!=null) {
+		if (order != null) {
 			return orderRepository.save(order);
 		}
 		return result;
 	}
+
 	
-	//0109新增
-	//訂單狀態為1的話變成2,2的話變成3
-	//3的話不會改變
+	public Integer getOrderDetail (Integer orderid) {
+		Optional<OrderBean> optional = orderRepository.findById(orderid);
+		if (optional.isPresent()) {
+			OrderBean result = optional.get();
+			Integer Orderid = result.getId();
+			
+			
+			return Orderid;
+		}
+		return null;
+	}
+
+	// 0109新增
+	// 訂單狀態為1的話變成2,2的話變成3
+	// 3的話不會改變
 	public OrderBean nextStep(Integer orderid) {
 		Optional<OrderBean> optional = orderRepository.findById(orderid);
-		if(optional.isPresent()) {
+		if (optional.isPresent()) {
 			OrderBean result = optional.get();
 			Integer id = result.getStatus();
-			if(id <= 2) {
+			if (id <= 2) {
 				id++;
 			}
 			result.setStatus(id);
@@ -46,9 +59,9 @@ public class OrderRepositoryService {
 		}
 		return null;
 	}
-	
+
 	public OrderBean delete(OrderBean order) {
-		
+
 		return null;
 	}
 
