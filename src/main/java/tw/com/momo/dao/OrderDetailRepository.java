@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import tw.com.momo.domain.OrderBean;
 import tw.com.momo.domain.OrderDetailBean;
 import tw.com.momo.payload.response.myoderResponse;
 

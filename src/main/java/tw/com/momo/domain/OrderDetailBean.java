@@ -1,7 +1,5 @@
 package tw.com.momo.domain;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,10 +36,16 @@ public class OrderDetailBean {
 	
 	@Column(name = "NUM")
 	private Integer num;
+	
+	@Column(name = "PRNAME")
+	private String prname;
+	
+	@Column(name = "PRPRICE")
+	private Integer prprice;
 
 	@Override
 	public String toString() {
-		return "OrderDetailBean [id=" + id + ", quantity=" + num + "]";
+		return "OrderDetailBean [id =" + id + ", num =" + num +",product_name = "+ prprice +", price = "+ prprice + "]";
 	}
 
 	public Integer getId() {
@@ -75,4 +79,21 @@ public class OrderDetailBean {
 	public void setNum(Integer num) {
 		this.num = num;
 	}
+
+	public String getPrname() {
+		return prname;
+	}
+
+	public void setPrname(String prname) {
+		this.prname = prname;
+	}
+
+	public Integer getPrprice() {
+		return prprice;
+	}
+
+	public void setPrprice(Integer prprice) {
+		this.prprice = prprice;
+	}
+	
 }
