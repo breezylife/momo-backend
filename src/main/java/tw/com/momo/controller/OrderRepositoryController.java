@@ -1,6 +1,7 @@
 package tw.com.momo.controller;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,8 +58,17 @@ public class OrderRepositoryController {
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserBean user = userRepository.findByUsername(userDetails.getUsername());
 		
-		Iterable<OrderBean> myorderdetails = orderRepository.findByUserBean(user);
-		return ResponseEntity.ok(myorderdetails);
+//		ArrayList<?>[][] arr;
+		Iterable<OrderBean> orders = orderRepository.findByUserBean(user);
+		for (OrderBean order : orders) {
+//			Iterable<OrderDetailBean> orderDetails = orderDetailRepository.findByOrderBean(order);
+//			for(OrderDetailBean orderDetail : orderDetails) {
+//				
+//			}
+//			ArrayList<?>[][]
+		}
+		
+		return ResponseEntity.ok(null);
 	}
 	
 	@PostMapping(path = "/order")

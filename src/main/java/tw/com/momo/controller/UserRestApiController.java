@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,26 +54,28 @@ public class UserRestApiController {
 	public JwtResponse authenticateUser(@RequestBody LoginDto loginDto) {
 		Authentication authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
-		
+
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-			SecurityContextHolder.getContext().setAuthentication(authentication);
-			String jwt = jwtUtils.generateJwtToken(authentication);
-			System.out.println(jwt);
-			return new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail());
-			
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		String jwt = jwtUtils.generateJwtToken(authentication);
+		System.out.println(jwt);
+		return new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail());
+
 	}
 
-//	@RequestMapping(value = "/register", method = RequestMethod.GET)
-//	public ResponseEntity<?> displayRegistration(ModelAndView modelAndView, UserBean user) {
-//		modelAndView.addObject("user", user);
-//		modelAndView.setViewName("register");
-//		return modelAndView;
-//	}
+	@GetMapping("/user")
+	@CrossOrigin
+	public ResponseEntity<?> readuser() {
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserBean user = userRepository.findByUsername(userDetails.getUsername());
+		// System.out.println("123123asdf"+user);
+		return ResponseEntity.ok(user);
+	}
 
-	@PostMapping("/register")
+	@PostMapping("/user")
 	@CrossOrigin
 	public String registerUser(@RequestBody SignUpDto signUpDto) {
-		
+
 		if (userRepository.existsByUsername(signUpDto.getUsername())) {
 //			return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);\
 			return "{\"error\":1}";
@@ -90,7 +93,7 @@ public class UserRestApiController {
 			user.setAddress(signUpDto.getAddress());
 			user.setUsername(signUpDto.getUsername());
 			user.setUserphoto(signUpDto.getUserphoto());
-			
+
 			userRepository.save(user);
 
 			ConfirmationTokenBean confirmationToken = new ConfirmationTokenBean(user);
@@ -111,7 +114,7 @@ public class UserRestApiController {
 //		return new ResponseEntity<>("Plz check the Email to confim your account", HttpStatus.OK);
 		return "{\"success\":1}";
 	}
-	
+
 	@PostMapping("/Oauth")
 	@CrossOrigin
 	public ResponseEntity<?> oauthRegister(@RequestBody OauthRequestDto oauthRequestDto) {
@@ -136,16 +139,15 @@ public class UserRestApiController {
 	@GetMapping("/confirm-account")
 	public ResponseEntity<?> confirmUserAccount(@RequestParam("token") String confirmationToken) {
 		ConfirmationTokenBean token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
-		
+
 		String content;
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.setContentType(MediaType.TEXT_HTML);
 		if (token != null) {
 			UserBean user = token.getUserBean();
 			user.setEnabled(true);
-			
+
 			userRepository.save(user);
-			
 
 			content = "<h3>Congratulations! Your account has been activated and email is verified!</h3>";
 //			Optional<UserBean> user = userRepository.findByEmail(token.getUserBean().getEmail());
