@@ -78,6 +78,19 @@ public class ProductRestApiController {
 //		}
 //		
 
+	// 商品圖片
+	@GetMapping("/productPics/{id}")
+	public ResponseEntity<?> getPics(@PathVariable Integer id){
+
+		Optional<ProductBean> product = productRepository.findById(id);
+		Iterable<PictureBean> pics = pictureRepository.findAllByProductBean(product);
+		
+		System.out.println("pics : "+pics);
+		
+		return ResponseEntity.ok(pics);
+	}
+	
+	
 	@PostMapping("/product")
 	@CrossOrigin
 	public ResponseEntity<?> insert(@RequestBody ProductDto productDto) {
