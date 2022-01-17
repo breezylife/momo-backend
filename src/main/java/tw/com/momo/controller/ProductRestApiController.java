@@ -105,13 +105,17 @@ public class ProductRestApiController {
 		product.setStock(productDto.getStock());
 
 		product.setState(1);
+		
+		List<String> url = productDto.getUrl();
+		product.setCover(url.get(0));
+		
 		productRepository.save(product);
 
 		URI uri = URI.create("/product" + product.getId());
 
-		List<String> url = productDto.getUrl();
+		
 		for (String pic : url) {
-			System.out.println(pic);
+//			System.out.println(pic);
 			PictureBean pictureBean = new PictureBean(product, pic);
 			pictureRepository.save(pictureBean);
 		}

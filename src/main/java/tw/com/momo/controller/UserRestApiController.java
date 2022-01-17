@@ -131,6 +131,7 @@ public class UserRestApiController {
 		userBean.setBirthday(userDto.getBirthday());
 		userBean.setPhone(userDto.getPhone());
 		userBean.setAddress(userDto.getAddress());
+		userBean.setUserphoto(userDto.getUserphoto());
 
 		userRepository.save(userBean);
 

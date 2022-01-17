@@ -74,6 +74,9 @@ public class OrderBean {
 	
 	@Column(name = "SETUPTIME")
 	private Date setuptime;
+	
+	@Column(name = "USERPHOTO")
+	private String userphoto;
 
 	@Override
 	public String toString() {
@@ -135,5 +138,13 @@ public class OrderBean {
 
 	public void setSetuptime(Date setuptime) {
 		this.setuptime = setuptime;
+	}
+
+	public String getUserphoto() {
+		return userphoto;
+	}
+
+	public void setUserphoto(String userphoto) {
+		this.userphoto = userphoto;
 	}
 }

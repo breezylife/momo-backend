@@ -27,6 +27,7 @@ public class ProductBean {
 //	private Integer num;
 	private String description;
 	private String category;
+	private String cover;
 	
 	//0109新增
 	@Column(name = "state", nullable = false, length = 11)
@@ -125,4 +126,13 @@ public class ProductBean {
 	public void setState(Integer state) {
 		this.state = state;
 	}
+
+	public String getCover() {
+		return cover;
+	}
+
+	public void setCover(String cover) {
+		this.cover = cover;
+	}
+	
 }
