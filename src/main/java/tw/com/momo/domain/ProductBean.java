@@ -1,8 +1,6 @@
 package tw.com.momo.domain;
 
 import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,7 +24,7 @@ public class ProductBean {
 	private String name;
 	private int price;
 	private int stock;
-	private Integer num;
+//	private Integer num;
 	private String description;
 	private String category;
 	
@@ -120,18 +117,12 @@ public class ProductBean {
 	public void setUserBean(UserBean userBean) {
 		this.userBean = userBean;
 	}
-	public Integer getNum() {
-		return num;
-	}
 
-	public void setNum(Integer num) {
-		this.num = num;
-	}
-	public Integer getStatus() {
+	public Integer getState() {
 		return state;
 	}
 
-	public void setStatus(Integer state) {
+	public void setState(Integer state) {
 		this.state = state;
 	}
 }

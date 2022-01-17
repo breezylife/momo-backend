@@ -30,6 +30,10 @@ public class PictureBean {
 		return id;
 	}
 	
+	public PictureBean() {
+		
+	}
+	
 	public PictureBean(ProductBean product , String picname) {
         this.productBean = product;
         this.picname = picname;
