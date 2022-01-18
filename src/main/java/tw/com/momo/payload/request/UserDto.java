@@ -8,7 +8,7 @@ public class UserDto {
 	private String birthday;
 	private String phone;
 	private String address;
-//	private String userphoto;
+	private String userphoto;
 	
 	public String getGender() {
 		return gender;
@@ -30,6 +30,13 @@ public class UserDto {
 	}
 	public String getAddress() {
 		return address;
+	}
+	
+	public String getUserphoto() {
+		return userphoto;
+	}
+	public void setUserphoto(String userphoto) {
+		this.userphoto = userphoto;
 	}
 	public void setAddress(String address) {
 		this.address = address;

@@ -16,5 +16,4 @@ public interface myoderResponse{
 	Integer getBuyerid();
 	String getBuyername();
 	String getSetuptime();
-	
 }

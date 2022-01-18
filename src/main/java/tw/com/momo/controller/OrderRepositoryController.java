@@ -63,7 +63,7 @@ public class OrderRepositoryController {
 		UserBean user = userRepository.findByUsername(userDetails.getUsername());
 		
 		List<myoderResponse> myorders = orderDetailRepository.getmyorderdetail(user.getId());
-		System.out.println(user+"1212");
+
 		return ResponseEntity.ok(myorders);
 	}
 	
@@ -85,7 +85,8 @@ public class OrderRepositoryController {
 	/*
 	 * method:create insert order by user
 	 */
-	@PostMapping(path = "/neworder")
+	@PostMapping(path = "/order")
+	@CrossOrigin
 	public ResponseEntity<?> createNewOrder(@RequestBody OrderDto order) {
 		List<ProductBean> products = order.getProducts();
 		// get user
@@ -119,6 +120,7 @@ public class OrderRepositoryController {
 	 * method:update update order status by orderid
 	 */
 	@PatchMapping(path = "/next/{id}")
+	@CrossOrigin
 	public ResponseEntity<?> nextStatus(@PathVariable Integer id, @RequestBody OrderDto order) {
 		OrderBean result = orderRepositoryService.nextStep(id);
 		if (result != null) {
