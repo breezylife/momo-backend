@@ -63,7 +63,7 @@ public class OrderRepositoryController {
 		UserBean user = userRepository.findByUsername(userDetails.getUsername());
 		
 		List<myoderResponse> myorders = orderDetailRepository.getmyorderdetail(user.getId());
-
+		System.out.println(user+"1212");
 		return ResponseEntity.ok(myorders);
 	}
 	

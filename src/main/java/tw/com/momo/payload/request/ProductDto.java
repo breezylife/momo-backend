@@ -12,7 +12,7 @@ public class ProductDto {
 	private String description;
 	private String category;
 	private List<String> url;
-	private List<ProdspecBean> specs;
+	private List<ProductSpecDto> specs;
 
 	
 	public List<String> getUrl() {
@@ -63,11 +63,11 @@ public class ProductDto {
 		this.category = category;
 	}
 
-	public List<ProdspecBean> getSpecs() {
+	public List<ProductSpecDto> getSpecs() {
 		return specs;
 	}
 
-	public void setSpecs(List<ProdspecBean> specs) {
+	public void setSpecs(List<ProductSpecDto> specs) {
 		this.specs = specs;
 	}
 }
