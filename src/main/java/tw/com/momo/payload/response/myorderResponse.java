@@ -1,6 +1,6 @@
 package tw.com.momo.payload.response;
 
-public interface myoderResponse{
+public interface myorderResponse{
 	Integer getId();
 	Integer getShipping();
 	Integer getPayment();
@@ -9,12 +9,16 @@ public interface myoderResponse{
 	String getname();
 	Integer getNum();
 	Integer getPrice();
+	Integer getPrprice();
 	String getCategory();
 	String getProductname();
 	Integer getPrtotal();
 	Integer getUserid();
 	Integer getBuyerid();
 	String getBuyername();
+	Integer getTotal();
+	Integer getPrid();
+	Integer Alltotal();
 	String getSetuptime();
 	
 }

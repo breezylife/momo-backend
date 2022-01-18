@@ -23,7 +23,7 @@ import tw.com.momo.domain.OrderDetailBean;
 import tw.com.momo.domain.ProductBean;
 import tw.com.momo.domain.UserBean;
 import tw.com.momo.payload.request.OrderDto;
-import tw.com.momo.payload.response.myoderResponse;
+import tw.com.momo.payload.response.myorderResponse;
 import tw.com.momo.service.OrderRepositoryService;
 
 @RestController
@@ -58,12 +58,13 @@ public class OrderRepositoryController {
 	 */
 	@GetMapping("/myorder")
 	@CrossOrigin
-	public ResponseEntity<List<myoderResponse>> myorder() {
+	public ResponseEntity<List<myorderResponse>> myorder() {
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserBean user = userRepository.findByUsername(userDetails.getUsername());
 		
-		List<myoderResponse> myorders = orderDetailRepository.getmyorderdetail(user.getId());
-
+		List<myorderResponse> myorders = orderDetailRepository.getmyorderdetail(user.getId());
+		
+		
 		return ResponseEntity.ok(myorders);
 	}
 	
@@ -73,10 +74,10 @@ public class OrderRepositoryController {
 	 */
 	@GetMapping("/mycommodity_with_order")
 	@CrossOrigin
-	public ResponseEntity<List<myoderResponse>> myprwithorder(){
+	public ResponseEntity<List<myorderResponse>> myprwithorder(){
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserBean user = userRepository.findByUsername(userDetails.getUsername());
-		List<myoderResponse> myprlistwithorder = orderDetailRepository.getmyprwithorder(user.getId());
+		List<myorderResponse> myprlistwithorder = orderDetailRepository.getmyprwithorder(user.getId());
 		return  ResponseEntity.ok(myprlistwithorder);
 	}
 	
@@ -85,7 +86,7 @@ public class OrderRepositoryController {
 	/*
 	 * method:create insert order by user
 	 */
-	@PostMapping(path = "/neworder")
+	@PostMapping(path = "/order")
 	public ResponseEntity<?> createNewOrder(@RequestBody OrderDto order) {
 		List<ProductBean> products = order.getProducts();
 		// get user
@@ -97,6 +98,7 @@ public class OrderRepositoryController {
 		newoder.setPayment(order.getPayment());
 		newoder.setShipping(order.getShipping());
 		newoder.setStatus(1);
+		System.out.println(newoder);
 //		newoder.setShippingadd(order.getShippingadd());
 
 		OrderBean result = orderRepositoryService.createOrder(newoder);

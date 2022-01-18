@@ -8,6 +8,7 @@ import tw.com.momo.domain.PictureBean;
 import tw.com.momo.domain.ProductBean;
 
 public interface PictureRepository extends CrudRepository<PictureBean, Integer> {
+	
 	Iterable<PictureBean> findAllByProductBean(Optional<ProductBean> product);
 
 }

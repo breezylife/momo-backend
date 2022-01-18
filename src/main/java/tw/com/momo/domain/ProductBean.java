@@ -22,8 +22,8 @@ public class ProductBean {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
-	private int price;
-	private int stock;
+	private Integer price;
+	private Integer stock;
 //	private Integer num;
 	private String description;
 	private String category;
