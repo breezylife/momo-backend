@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "proudspec")
+@Table(name = "productspec")
 public class ProdspecBean {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -72,7 +72,6 @@ public class ProdspecBean {
 	public void setStock(Integer stock) {
 		this.stock = stock;
 	}
-	
 	
 //	public Integer getProductsid() {
 //		return productsid;

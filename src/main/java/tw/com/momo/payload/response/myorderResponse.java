@@ -20,5 +20,4 @@ public interface myorderResponse{
 	Integer getPrid();
 	Integer Alltotal();
 	String getSetuptime();
-	
 }

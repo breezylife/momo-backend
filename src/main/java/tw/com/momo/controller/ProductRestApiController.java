@@ -26,6 +26,7 @@ import tw.com.momo.domain.ProdspecBean;
 import tw.com.momo.domain.ProductBean;
 import tw.com.momo.domain.UserBean;
 import tw.com.momo.payload.request.ProductDto;
+import tw.com.momo.payload.request.ProductSpecDto;
 import tw.com.momo.service.ProductRepositoryService;
 
 @RestController
@@ -94,6 +95,7 @@ public class ProductRestApiController {
 	@PostMapping("/product")
 	@CrossOrigin
 	public ResponseEntity<?> insert(@RequestBody ProductDto productDto) {
+		
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserBean user = userRepository.findByUsername(userDetails.getUsername());
 
@@ -105,46 +107,34 @@ public class ProductRestApiController {
 		product.setStock(productDto.getStock());
 
 		product.setState(1);
+		
+		List<String> url = productDto.getUrl();
+		product.setCover(url.get(0));
+		
 		productRepository.save(product);
 
 		URI uri = URI.create("/product" + product.getId());
 
-		List<String> url = productDto.getUrl();
+		
 		for (String pic : url) {
-			System.out.println(pic);
+//			System.out.println(pic);
 			PictureBean pictureBean = new PictureBean(product, pic);
 			pictureRepository.save(pictureBean);
 		}
-		
-//		List<ProdspecBean> specs = productDto.getSpecs();
-//		for (ProdspecBean spec : specs) {
-//			ProdspecBean prodspecBean = new ProdspecBean(product);
-//			prodspecBean.setSpec(spec.getSpec());
-//			prodspecBean.setStock(spec.getStock());
-//			prodspecRepository.save(prodspecBean);
-//		}
+		System.out.println("prodspecDto="+productDto.getSpecs());
+		List<ProductSpecDto> specs = productDto.getSpecs();
+		for (ProductSpecDto spec : specs) {
+			ProdspecBean prodspecBean = new ProdspecBean(product);
+			prodspecBean.setSpec(spec.getName());
+			prodspecBean.setStock(spec.getStock());
+			System.out.println("prodspecBean="+prodspecBean);
+			prodspecRepository.save(prodspecBean);
+		}
 //				return product;
 //				return new ResponseEntity<>(productDto.getName()+"商品已經建立", HttpStatus.OK);
 		return ResponseEntity.created(uri).body(product);
 	}
-//		@PostMapping("/product")
-//		@CrossOrigin
-//		public ProductBean insert(@RequestBody ProductDto productDto) {
-//			
-//			UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//			UserBean user = userRepository.findByUsername(userDetails.getUsername());
-//			
-//				ProductBean product = new ProductBean(user);
-//				product.setName(productDto.getName());
-//				product.setPrice(productDto.getPrice());
-//				product.setDescription(productDto.getDescription());
-//				product.setCategory(productDto.getCategory());
-//				product.setStock(productDto.getStock());
-//
-//				productRepository.save(product);
-//			
-//				return product;
-//		}
+
 
 	// 關鍵字搜尋
 	@GetMapping("/keyword/{keyword}")
