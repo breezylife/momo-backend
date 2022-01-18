@@ -104,7 +104,7 @@ public class ProductRestApiController {
 		product.setPrice(productDto.getPrice());
 		product.setDescription(productDto.getDescription());
 		product.setCategory(productDto.getCategory());
-		product.setStock(productDto.getStock());
+//		product.setStock(productDto.getStock());
 
 		product.setState(1);
 		

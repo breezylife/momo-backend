@@ -23,7 +23,7 @@ public class ProductBean {
 	private Integer id;
 	private String name;
 	private int price;
-	private int stock;
+//	private int stock;
 //	private Integer num;
 	private String description;
 	private String category;
@@ -51,7 +51,7 @@ public class ProductBean {
 
 	@Override
 	public String toString() {
-		return "ProductBean [id=" + id + ", name=" + name + ", price=" + price + ", stock=" + stock + ", description="
+		return "ProductBean [id=" + id + ", name=" + name + ", price=" + price +", description="
 				+ description + ", category=" + category + ", state=" + state + ", createdDate=" + createddate + "]";
 	}
 
@@ -79,13 +79,13 @@ public class ProductBean {
 		this.price = price;
 	}
 
-	public int getStock() {
-		return stock;
-	}
-
-	public void setStock(int stock) {
-		this.stock = stock;
-	}
+//	public int getStock() {
+//		return stock;
+//	}
+//
+//	public void setStock(int stock) {
+//		this.stock = stock;
+//	}
 
 	public String getDescription() {
 		return description;
