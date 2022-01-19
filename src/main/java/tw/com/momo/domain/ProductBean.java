@@ -22,6 +22,7 @@ public class ProductBean {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
+
 	private Integer price;
 //	private Integer stock;
 //	private Integer num;
@@ -51,7 +52,7 @@ public class ProductBean {
 
 	@Override
 	public String toString() {
-		return "ProductBean [id=" + id + ", name=" + name + ", price=" + price  + ", description="
+		return "ProductBean [id=" + id + ", name=" + name + ", price=" + price +", description="
 				+ description + ", category=" + category + ", state=" + state + ", createdDate=" + createddate + "]";
 	}
 

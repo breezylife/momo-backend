@@ -58,6 +58,15 @@ public class ProductRestApiController {
 
 		return ResponseEntity.ok(product);
 	}
+	
+	@GetMapping("/productSpec/{id}")
+	@CrossOrigin
+	public ResponseEntity<?> productSpec(@PathVariable Integer id) {
+		Optional<ProductBean> optional = productRepository.findById(id);
+		List<ProdspecBean> productSpec = prodspecRepository.findAllByProduct(optional.get());
+
+		return ResponseEntity.ok(productSpec);
+	}
 
 	@GetMapping("/myproduct")
 	@CrossOrigin
@@ -104,6 +113,7 @@ public class ProductRestApiController {
 		product.setPrice(productDto.getPrice());
 		product.setDescription(productDto.getDescription());
 		product.setCategory(productDto.getCategory());
+
 
 		product.setState(1);
 		
