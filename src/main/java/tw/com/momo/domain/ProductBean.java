@@ -22,8 +22,9 @@ public class ProductBean {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
-	private int price;
-//	private int stock;
+
+	private Integer price;
+//	private Integer stock;
 //	private Integer num;
 	private String description;
 	private String category;
@@ -78,15 +79,6 @@ public class ProductBean {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-
-//	public int getStock() {
-//		return stock;
-//	}
-//
-//	public void setStock(int stock) {
-//		this.stock = stock;
-//	}
-
 	public String getDescription() {
 		return description;
 	}

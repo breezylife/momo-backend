@@ -49,7 +49,7 @@ public class CommentController {
 		Integer user = userDetails.getId();
 	
 			CommentBean comment = new CommentBean();
-			comment.setIndexx(commentDto.getIndexx());
+			comment.setbroad(commentDto.getBroad());
 			comment.setProductsid(id);
 			comment.setUserid(user);
 			
@@ -58,8 +58,8 @@ public class CommentController {
 			commentRepository.save(comment);
 		
 			return new ResponseEntity<>("已送出評論", HttpStatus.OK);
-	
 	}
+	
 	@DeleteMapping("/comment/{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") Integer id){
 		

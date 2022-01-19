@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import tw.com.momo.domain.OrderDetailBean;
-import tw.com.momo.payload.response.myoderResponse;
+import tw.com.momo.payload.response.myorderResponse;
 
 @Repository
 public interface OrderDetailRepository extends JpaRepository<OrderDetailBean, Integer> {
@@ -16,12 +16,15 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetailBean, In
 //	public  List<OrderDetailBean> findByOrder(OrderBean order);
 //	public  List<OrderDetailBean> findByOrderid(Integer id);
 	
-	@Query(value = "SELECT od.id, od.shipping,od.payment,od.status,od.shippingadd,"
-			+ "pr.name,odd.num ,pr.price,pr.category "
+	@Query(value = 
+//			"SELECT od.id, od.shipping,od.payment,od.status,od.shippingadd,"
+			"SELECT od.*,"
+			+ "pr.name,odd.num,odd.prprice,pr.category,(odd.prprice*odd.num)AS prtotal"
+			+ ",pr.id AS prid "
 			+ "FROM orderdetail AS odd JOIN orders AS od "
 			+ "ON odd.ordersid = od.id JOIN products AS pr "
 			+ "ON pr.id = odd.productsid WHERE od.userid = :id",nativeQuery = true)
-	public List<myoderResponse> getmyorderdetail(@Param("id") Integer id);
+	public List<myorderResponse> getmyorderdetail(@Param("id") Integer id);
 	
 	@Query(value = "SELECT od.id,od.shippingadd,od.payment,od.status,od.userid AS buyerid,"
 			+ "od.setuptime ,pr.name AS productname,pr.price,odd.num,"
@@ -29,6 +32,6 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetailBean, In
 			+ " FROM orders AS od JOIN orderdetail AS odd ON od.id = odd.ordersid"
 			+ " JOIN products AS pr ON pr.id= odd.productsid "
 			+ "JOIN user AS us ON od.userid =us.id WHERE pr.sellerid = 2  ",nativeQuery = true)
-	public List<myoderResponse> getmyprwithorder(@Param("id") Integer id);
+	public List<myorderResponse> getmyprwithorder(@Param("id") Integer id);
 
 }
