@@ -103,7 +103,6 @@ public class OrderRepositoryController {
 		OrderBean result = orderRepositoryService.createOrder(newoder);
 		for (ProductBean product : products) {
 			OrderDetailBean orderDetail = new OrderDetailBean(newoder, product);
-			orderDetail.setNum(product.getStock());
 			orderDetail.setPrname(product.getName());
 			orderDetail.setPrprice(product.getPrice());
 			orderDetailRepository.save(orderDetail);
