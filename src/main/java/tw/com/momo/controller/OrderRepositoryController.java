@@ -2,6 +2,7 @@ package tw.com.momo.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import tw.com.momo.dao.OrderDetailRepository;
+import tw.com.momo.dao.ProductRepository;
 import tw.com.momo.dao.UserRepository;
 import tw.com.momo.domain.OrderBean;
 import tw.com.momo.domain.OrderDetailBean;
 import tw.com.momo.domain.ProductBean;
 import tw.com.momo.domain.UserBean;
+import tw.com.momo.payload.request.OrderDetailDto;
 import tw.com.momo.payload.request.OrderDto;
 import tw.com.momo.payload.response.myorderResponse;
 import tw.com.momo.service.OrderRepositoryService;
@@ -32,7 +35,8 @@ public class OrderRepositoryController {
 	@Autowired
 	private UserRepository userRepository;
 
-	
+	@Autowired
+	private ProductRepository productRepository;
 
 	@Autowired
 	private OrderRepositoryService orderRepositoryService;
@@ -88,7 +92,9 @@ public class OrderRepositoryController {
 	@PostMapping(path = "/order")
 	@CrossOrigin
 	public ResponseEntity<?> createNewOrder(@RequestBody OrderDto order) {
-		List<ProductBean> products = order.getProducts();
+		List<OrderDetailDto> products = order.getProducts();
+		System.out.println("order="+order);
+		System.out.println("products="+order);
 		// get user
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserBean user = userRepository.findByUsername(userDetails.getUsername());
@@ -98,15 +104,16 @@ public class OrderRepositoryController {
 		newoder.setPayment(order.getPayment());
 		newoder.setShipping(order.getShipping());
 		newoder.setStatus(1);
-//		newoder.setShippingadd(order.getShippingadd());
+		newoder.setShippingadd(order.getShippingadd());
 
 		OrderBean result = orderRepositoryService.createOrder(newoder);
-		for (ProductBean product : products) {
-			OrderDetailBean orderDetail = new OrderDetailBean(newoder, product);
+		for (OrderDetailDto product : products) {
+			Optional<ProductBean> prod = productRepository.findById(product.getId());
+			OrderDetailBean orderDetail = new OrderDetailBean(newoder, prod.get());
 			orderDetail.setPrname(product.getName());
 			orderDetail.setPrprice(product.getPrice());
 			orderDetailRepository.save(orderDetail);
-//			System.out.println(orderDetail);
+			System.out.println(orderDetail);
 		}
 		if (result != null) {
 			URI uri = URI.create("/neworder" + result.getId());

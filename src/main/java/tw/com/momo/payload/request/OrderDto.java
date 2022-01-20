@@ -13,7 +13,7 @@ public class OrderDto {
 	private Integer shippingadd;
 	
 	private String email;
-	private List<ProductBean> products;
+	private List<OrderDetailDto> products;
 	
 	public Integer getId() {
 		return id;
@@ -57,10 +57,10 @@ public class OrderDto {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public List<ProductBean> getProducts() {
+	public List<OrderDetailDto> getProducts() {
 		return products;
 	}
-	public void setProducts(List<ProductBean> products) {
+	public void setProducts(List<OrderDetailDto> products) {
 		this.products = products;
 	}
 }
