@@ -42,14 +42,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        		.cors().and()
         		.csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/**").permitAll()
-                .antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/product/**").permitAll()
+                .antMatchers("/api/**").permitAll()
+//              .antMatchers("/api/auth/**").permitAll()
+//              .antMatchers("/api/product/**").permitAll()
+//              .antMatchers("/api/order/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        
+
+        		
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 

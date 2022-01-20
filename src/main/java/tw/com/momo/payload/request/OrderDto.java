@@ -1,7 +1,6 @@
 package tw.com.momo.payload.request;
 
 import java.util.List;
-import java.util.Set;
 
 import tw.com.momo.domain.ProductBean;
 
@@ -12,6 +11,7 @@ public class OrderDto {
 	private Integer payment;
 	private Integer status;
 	private Integer shippingadd;
+	
 	private String email;
 	private List<ProductBean> products;
 	

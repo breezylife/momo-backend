@@ -4,12 +4,9 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -21,8 +18,8 @@ public class CommentBean {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
-	@Column(name = "indexx")
-	private String indexx;
+	@Column(name = "broad")
+	private String broad;
 	@Column(name = "productsid")
 	private Integer productsid;
 	@Column(name = "userid")
@@ -31,9 +28,7 @@ public class CommentBean {
 	@Temporal(TemporalType.TIMESTAMP)
     private Date setuptime;
 	
-    
  
-    
 	public CommentBean() {
         setuptime = new Date();
     }	
@@ -62,12 +57,12 @@ public class CommentBean {
 		this.id = id;
 	}
 
-	public String getIndexx() {
-		return indexx;
+	public String getbroad() {
+		return broad;
 	}
 
-	public void setIndexx(String indexx) {
-		this.indexx = indexx;
+	public void setbroad(String broad) {
+		this.broad = broad;
 	}
 
 
@@ -82,7 +77,7 @@ public class CommentBean {
 
 	@Override
 	public String toString() {
-		return "CommentBean [id=" + id + ", indexx=" + indexx + ", userid="
+		return "CommentBean [id=" + id + ", indexx=" + broad + ", userid="
 				+ ", setuptime=" + setuptime + "]";
 	}
 	

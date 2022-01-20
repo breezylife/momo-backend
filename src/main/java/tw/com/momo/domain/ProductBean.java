@@ -1,8 +1,6 @@
 package tw.com.momo.domain;
 
 import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -25,10 +22,13 @@ public class ProductBean {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
-	private int price;
-	private int stock;
+
+	private Integer price;
+//	private Integer stock;
+//	private Integer num;
 	private String description;
 	private String category;
+	private String cover;
 	
 	//0109新增
 	@Column(name = "state", nullable = false, length = 11)
@@ -52,7 +52,7 @@ public class ProductBean {
 
 	@Override
 	public String toString() {
-		return "ProductBean [id=" + id + ", name=" + name + ", price=" + price + ", stock=" + stock + ", description="
+		return "ProductBean [id=" + id + ", name=" + name + ", price=" + price +", description="
 				+ description + ", category=" + category + ", state=" + state + ", createdDate=" + createddate + "]";
 	}
 
@@ -79,15 +79,6 @@ public class ProductBean {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-
-	public int getStock() {
-		return stock;
-	}
-
-	public void setStock(int stock) {
-		this.stock = stock;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -120,11 +111,20 @@ public class ProductBean {
 		this.userBean = userBean;
 	}
 
-	public Integer getStatus() {
+	public Integer getState() {
 		return state;
 	}
 
-	public void setStatus(Integer state) {
+	public void setState(Integer state) {
 		this.state = state;
 	}
+
+	public String getCover() {
+		return cover;
+	}
+
+	public void setCover(String cover) {
+		this.cover = cover;
+	}
+	
 }

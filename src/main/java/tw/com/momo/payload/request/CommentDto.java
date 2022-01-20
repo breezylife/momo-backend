@@ -1,19 +1,19 @@
 package tw.com.momo.payload.request;
 
 public class CommentDto {
-	private String indexx;
+	private String broad;
 
-	public String getIndexx() {
-		return indexx;
+	public String getBroad() {
+		return broad;
 	}
 
-	public void setIndexx(String indexx) {
-		this.indexx = indexx;
+	public void setBroad(String broad) {
+		this.broad = broad;
 	}
 
 	@Override
 	public String toString() {
-		return "CommentDto [indexx=" + indexx + "]";
+		return "CommentDto [indexx=" + broad + "]";
 	}
 	
 }

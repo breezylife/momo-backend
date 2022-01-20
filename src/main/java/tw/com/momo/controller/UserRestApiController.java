@@ -1,7 +1,5 @@
 package tw.com.momo.controller;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,10 +10,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,7 +26,10 @@ import tw.com.momo.dao.UserRepository;
 import tw.com.momo.domain.ConfirmationTokenBean;
 import tw.com.momo.domain.UserBean;
 import tw.com.momo.payload.request.LoginDto;
+import tw.com.momo.payload.request.OauthRequestDto;
+import tw.com.momo.payload.request.PasswordDto;
 import tw.com.momo.payload.request.SignUpDto;
+import tw.com.momo.payload.request.UserDto;
 import tw.com.momo.payload.response.JwtResponse;
 import tw.com.momo.service.EmailSenderService;
 import tw.com.momo.service.UserDetailsImpl;
@@ -54,25 +57,28 @@ public class UserRestApiController {
 	public JwtResponse authenticateUser(@RequestBody LoginDto loginDto) {
 		Authentication authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
-		
+
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-			SecurityContextHolder.getContext().setAuthentication(authentication);
-			String jwt = jwtUtils.generateJwtToken(authentication);
-			
-			return new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail());
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		String jwt = jwtUtils.generateJwtToken(authentication);
+		System.out.println(jwt);
+		return new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail());
+
 	}
 
-//	@RequestMapping(value = "/register", method = RequestMethod.GET)
-//	public ResponseEntity<?> displayRegistration(ModelAndView modelAndView, UserBean user) {
-//		modelAndView.addObject("user", user);
-//		modelAndView.setViewName("register");
-//		return modelAndView;
-//	}
+	@GetMapping("/user")
+	@CrossOrigin
+	public ResponseEntity<?> readuser() {
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserBean user = userRepository.findByUsername(userDetails.getUsername());
+		// System.out.println("123123asdf"+user);
+		return ResponseEntity.ok(user);
+	}
 
-	@PostMapping("/register")
+	@PostMapping("/user")
 	@CrossOrigin
 	public String registerUser(@RequestBody SignUpDto signUpDto) {
-		
+
 		if (userRepository.existsByUsername(signUpDto.getUsername())) {
 //			return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);\
 			return "{\"error\":1}";
@@ -90,7 +96,7 @@ public class UserRestApiController {
 			user.setAddress(signUpDto.getAddress());
 			user.setUsername(signUpDto.getUsername());
 			user.setUserphoto(signUpDto.getUserphoto());
-			
+
 			userRepository.save(user);
 
 			ConfirmationTokenBean confirmationToken = new ConfirmationTokenBean(user);
@@ -112,19 +118,87 @@ public class UserRestApiController {
 		return "{\"success\":1}";
 	}
 
+	// 修改會員資料
+	@PutMapping("/user")
+	@CrossOrigin
+	public ResponseEntity<?> update(@RequestBody UserDto userDto) {
+
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserBean userBean = userRepository.findByUsername(userDetails.getUsername());
+
+//				userBean.setPassword(passwordEncoder.encode(userDto.getPassword()));
+		userBean.setGender(userDto.getGender());
+		userBean.setBirthday(userDto.getBirthday());
+		userBean.setPhone(userDto.getPhone());
+		userBean.setAddress(userDto.getAddress());
+		userBean.setUserphoto(userDto.getUserphoto());
+
+		userRepository.save(userBean);
+
+//		return new ResponseEntity<>("會員資料修改成功", HttpStatus.OK);
+		return ResponseEntity.ok(userBean);
+	}
+
+	// 修改密碼
+	@PostMapping("/userpassword")
+	@CrossOrigin
+	public String changePassword(@RequestBody PasswordDto passwordDto) {
+		System.out.println(passwordDto);
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserBean user = userRepository.findByUsername(userDetails.getUsername());
+
+		if (passwordEncoder.matches(passwordDto.getOldPassword(), user.getPassword())) {
+			if (passwordDto.getPassword().equals(passwordDto.getPassword2())) {
+				user.setPassword(passwordEncoder.encode(passwordDto.getPassword()));
+				userRepository.save(user);
+				return "{\"success\":1}";
+			} else {
+				System.out.println("新密碼不一致");
+				return "{\"error\":2}";
+			}
+
+		} else {
+			System.out.println("密碼輸入錯誤" + passwordEncoder.matches(user.getPassword(),
+					passwordEncoder.encode(passwordDto.getOldPassword())));
+			System.out.println(user.getPassword() + passwordDto.getOldPassword());
+			return "{\"error\":1}";
+		}
+
+	}
+
+	@PostMapping("/Oauth")
+	@CrossOrigin
+	public ResponseEntity<?> oauthRegister(@RequestBody OauthRequestDto oauthRequestDto) {
+		UserBean user = new UserBean();
+		if (userRepository.existsByUsername(oauthRequestDto.getDisplayName())) {
+//			return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);\
+			return new ResponseEntity<String>("使用者名稱已有人使用", HttpStatus.NOT_FOUND);
+		} else if (userRepository.existsByEmail(oauthRequestDto.getEmail())) {
+//			return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("電子郵件已有人使用", HttpStatus.NOT_FOUND);
+		} else {
+			user.setEmail(oauthRequestDto.getEmail());
+			user.setPassword(passwordEncoder.encode(oauthRequestDto.getUid()));
+			user.setUsername(oauthRequestDto.getDisplayName());
+			user.setUserphoto(oauthRequestDto.getPhotoURL());
+			user.setEnabled(true);
+			userRepository.save(user);
+		}
+		return ResponseEntity.created(null).body(user);
+	}
+
 	@GetMapping("/confirm-account")
 	public ResponseEntity<?> confirmUserAccount(@RequestParam("token") String confirmationToken) {
 		ConfirmationTokenBean token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
-		
+
 		String content;
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.setContentType(MediaType.TEXT_HTML);
 		if (token != null) {
 			UserBean user = token.getUserBean();
 			user.setEnabled(true);
-			
+
 			userRepository.save(user);
-			
 
 			content = "<h3>Congratulations! Your account has been activated and email is verified!</h3>";
 //			Optional<UserBean> user = userRepository.findByEmail(token.getUserBean().getEmail());

@@ -32,13 +32,17 @@ public class ProductRepositoryService{
 	}
 	
 	//0109新增
-	public ProductBean remove(Integer id) {
+	public ProductBean changeState(Integer id) {
 		if(id!=null) {
 			Optional<ProductBean> optional = productRepository.findById(id);
 			if(optional.isPresent()) {
-				ProductBean remove = optional.get();
-				remove.setStatus(0);
-				return productRepository.save(remove);
+				ProductBean product = optional.get();
+				if(product.getState().equals(1)) {
+					product.setState(0);
+				}else if(product.getState().equals(0)) {
+					product.setState(1);
+				}
+				return productRepository.save(product);
 			}
 		}
 		return null;
