@@ -90,6 +90,7 @@ public class ProductRestApiController {
 
 	// 商品圖片
 	@GetMapping("/productPics/{id}")
+	@CrossOrigin
 	public ResponseEntity<?> getPics(@PathVariable Integer id){
 
 		Optional<ProductBean> product = productRepository.findById(id);
