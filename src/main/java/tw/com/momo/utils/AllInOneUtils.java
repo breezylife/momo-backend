@@ -21,6 +21,8 @@ import ecpay.payment.integration.domain.QueryCreditCardPeriodInfoObj;
 import ecpay.payment.integration.domain.QueryTradeInfoObj;
 import ecpay.payment.integration.domain.QueryTradeObj;
 import ecpay.payment.integration.domain.TradeNoAioObj;
+import tw.com.momo.domain.ProductBean;
+import tw.com.momo.payload.request.EcpayDto;
 
 public class AllInOneUtils {
 	public static AllInOne all;
@@ -148,13 +150,19 @@ public class AllInOneUtils {
 		return form;
 	}
 	
-	public static String genAioCheckOutATM(){
+	public static String genAioCheckOutATM(EcpayDto ecpay){
 		AioCheckOutATM obj = new AioCheckOutATM();
-		obj.setMerchantTradeNo("testCompany0005");
+		UUID uid = UUID.randomUUID();
+		String itemName="";
+		for (ProductBean product:ecpay.getProducts()) {
+			itemName += product.getName()+"#";
+		}
+		ecpay.getProducts();
+		obj.setMerchantTradeNo(uid.toString().replaceAll("-", "").substring(0, 20));
 		obj.setMerchantTradeDate("2017/01/01 08:05:23");
 		obj.setTotalAmount("50");
 		obj.setTradeDesc("test Description");
-		obj.setItemName("TestItem");
+		obj.setItemName(itemName);
 		obj.setReturnURL("http://211.23.128.214:5000");
 		obj.setNeedExtraPaidInfo("N");
 		obj.setExpireDate("6");
@@ -226,13 +234,18 @@ public class AllInOneUtils {
 		return form;
 	}
 	
-	public static String genAioCheckOutOneTime(){
+	public static String genAioCheckOutOneTime(EcpayDto ecpay){
 		AioCheckOutOneTime obj = new AioCheckOutOneTime();
-		obj.setMerchantTradeNo("testCompany0008");
+		String itemName="";
+		for (ProductBean product:ecpay.getProducts()) {
+			itemName += product.getName()+"#";
+		}
+		UUID uid = UUID.randomUUID();
+		obj.setMerchantTradeNo(uid.toString().replaceAll("-", "").substring(0, 20));
 		obj.setMerchantTradeDate("2017/01/01 08:05:23");
-		obj.setTotalAmount("50");
+		obj.setTotalAmount(ecpay.getTotal());
 		obj.setTradeDesc("test Description");
-		obj.setItemName("TestItem");
+		obj.setItemName(itemName);
 		obj.setReturnURL("http://211.23.128.214:5000");
 		obj.setNeedExtraPaidInfo("N");
 		obj.setRedeem("Y");
@@ -242,7 +255,9 @@ public class AllInOneUtils {
 	
 	public static String genAioCheckOutPeriod(){
 		AioCheckOutPeriod obj = new AioCheckOutPeriod();
-		obj.setMerchantTradeNo("testCompany0009");
+		UUID uid = UUID.randomUUID();
+		System.out.println(uid);
+		obj.setMerchantTradeNo(uid.toString().replaceAll("-", "").substring(0, 20));
 		obj.setMerchantTradeDate("2017/01/01 08:05:23");
 		obj.setTotalAmount("50");
 		obj.setTradeDesc("test Description");
