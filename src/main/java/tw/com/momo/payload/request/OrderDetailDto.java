@@ -4,12 +4,12 @@ public class OrderDetailDto {
 	
 	private Integer id;
 	private String name;
-	private Integer stock;
+	private Integer num;
 	private Integer price;
 	
 	@Override
 	public String toString() {
-		return "OrderDetailDto [id=" + id + ", name=" + name + ", stock=" + stock + ", price=" + price + "]";
+		return "OrderDetailDto [id=" + id + ", name=" + name + ", num=" + num + ", price=" + price + "]";
 	}
 	
 	public Integer getId() {
@@ -24,11 +24,11 @@ public class OrderDetailDto {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Integer getStock() {
-		return stock;
+	public Integer getNum() {
+		return num;
 	}
-	public void setStock(Integer stock) {
-		this.stock = stock;
+	public void setNum(Integer num) {
+		this.num = num;
 	}
 	public Integer getPrice() {
 		return price;

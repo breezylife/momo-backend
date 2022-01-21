@@ -112,6 +112,7 @@ public class OrderRepositoryController {
 			OrderDetailBean orderDetail = new OrderDetailBean(newoder, prod.get());
 			orderDetail.setPrname(product.getName());
 			orderDetail.setPrprice(product.getPrice());
+			orderDetail.setNum(product.getNum());
 			orderDetailRepository.save(orderDetail);
 			System.out.println(orderDetail);
 		}
