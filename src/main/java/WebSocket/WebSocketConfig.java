@@ -1,7 +1,15 @@
 package WebSocket;
 
+import com.sun.security.auth.UserPrincipal;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.messaging.simp.stomp.StompCommand;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.messaging.support.ChannelInterceptor;
+import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
@@ -9,21 +17,38 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
-   
+
     @Override
-    public void registerStompEndpoints(StompEndpointRegistry endpointRegistry) {
-        // 註冊一個給Client連至WebSocket Server的節點(websocket endpoint)
-        endpointRegistry.addEndpoint("/chatroom").withSockJS(); 
+    public void configureMessageBroker(MessageBrokerRegistry config) {
+        config.enableSimpleBroker("/topic", "/user", "/subscribe");
+        config.setUserDestinationPrefix("/user");
+        config.setApplicationDestinationPrefixes("/app");
     }
 
     @Override
-    public void configureMessageBroker(MessageBrokerRegistry brokerRegister) {
-        
-        // 啟用一個訊息代理並設定訊息發送目地的前綴路徑
-        brokerRegister.enableSimpleBroker("/topic");
-        
-        // 設定導向至訊息處理器的前綴路徑
-        brokerRegister.setApplicationDestinationPrefixes("/app");
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/chatroom");
+        registry.addEndpoint("/chatroom").withSockJS();
     }
 
+    /**
+     * 頻道內的攔截訊息
+     */
+    @Override
+    public void configureClientInboundChannel(ChannelRegistration registration) {
+        registration.interceptors(new ChannelInterceptor() {
+            @Override
+            public Message<?> preSend(Message<?> message, MessageChannel channel) {
+                StompHeaderAccessor accessor =
+                        MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+
+                if (StompCommand.CONNECT.equals(accessor.getCommand())) {
+//                    String user = accessor.getNativeHeader("user").get(0);
+                    accessor.setUser(new UserPrincipal(accessor.getSessionId()));
+                }
+
+                return message;
+            }
+        });
+    }
 }
