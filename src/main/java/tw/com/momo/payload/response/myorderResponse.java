@@ -18,6 +18,9 @@ public interface myorderResponse{
 	String getBuyername();
 	Integer getTotal();
 	Integer getPrid();
-	Integer Alltotal();
+	Integer getStock();
+	String getSpec();
 	String getSetuptime();
+	String getCover();
+	
 }
