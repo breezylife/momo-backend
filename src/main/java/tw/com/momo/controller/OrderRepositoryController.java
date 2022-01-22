@@ -67,7 +67,7 @@ public class OrderRepositoryController {
 		UserBean user = userRepository.findByUsername(userDetails.getUsername());
 		
 		List<myorderResponse> myorders = orderDetailRepository.getmyorderdetail(user.getId());
-
+		System.out.println("myorders="+user);
 		return ResponseEntity.ok(myorders);
 	}
 	
@@ -113,6 +113,7 @@ public class OrderRepositoryController {
 			orderDetail.setPrname(product.getName());
 			orderDetail.setPrprice(product.getPrice());
 			orderDetail.setNum(product.getNum());
+			orderDetail.setIscommented(0);
 			orderDetailRepository.save(orderDetail);
 			System.out.println(orderDetail);
 		}

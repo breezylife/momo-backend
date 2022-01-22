@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,9 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import tw.com.momo.dao.CommentRepository;
+import tw.com.momo.dao.OrderDetailRepository;
 import tw.com.momo.dao.ProductRepository;
 import tw.com.momo.dao.UserRepository;
 import tw.com.momo.domain.CommentBean;
+import tw.com.momo.domain.OrderDetailBean;
+import tw.com.momo.domain.ProductBean;
+import tw.com.momo.domain.UserBean;
 import tw.com.momo.payload.request.CommentDto;
 import tw.com.momo.service.UserDetailsImpl;
 
@@ -31,36 +37,51 @@ public class CommentController {
 	private UserRepository userRepository;
 	@Autowired
 	private ProductRepository productRepository;
+
+	@Autowired
+	private OrderDetailRepository orderDetailRepository;
+	
 	
 	@GetMapping("/comment/{id}")
+	@CrossOrigin
 	public ResponseEntity<?> select(@PathVariable("id") Integer id){
 	
 		Iterable<CommentBean> comments = commentRepository.findAllByProductsid(id);
-		
+
 		System.out.println(comments);
-		
 		return ResponseEntity.ok(comments);
 	}	
 	
-	@PostMapping("/comment/{id}")
-	public ResponseEntity<?> comment(@PathVariable("id") Integer id , @RequestBody CommentDto commentDto) {
+	@PostMapping("/comment/{prid}/{oddid}")
+	@CrossOrigin
+	public ResponseEntity<?> comment(@PathVariable("prid") Integer prid ,@PathVariable("oddid") Integer oddid, @RequestBody CommentDto commentDto) {
 		
-		UserDetailsImpl userDetails = (UserDetailsImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Integer user = userDetails.getId();
-	
-			CommentBean comment = new CommentBean();
-			comment.setbroad(commentDto.getBroad());
-			comment.setProductsid(id);
-			comment.setUserid(user);
+//		UserDetailsImpl userDetails = (UserDetailsImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//		Integer user = userDetails.getId();
+		
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserBean user = userRepository.findByUsername(userDetails.getUsername());
+//		System.out.println(user.getId());
 			
-			System.out.println("com:"+comment);
-
+			CommentBean comment = new CommentBean();
+			comment.setboard(commentDto.getBroad());
+			comment.setProductsid(prid);
+			comment.setUserid(user.getId());
 			commentRepository.save(comment);
-		
+			
+			System.out.println("com:"+commentDto);
+			Optional<OrderDetailBean> setState =orderDetailRepository.findById(oddid);
+			OrderDetailBean order=setState.get();
+			order.setIscommented(1);
+			orderDetailRepository.save(order);
+			
 			return new ResponseEntity<>("已送出評論", HttpStatus.OK);
+			
+			
 	}
 	
 	@DeleteMapping("/comment/{id}")
+	@CrossOrigin
 	public ResponseEntity<?> delete(@PathVariable("id") Integer id){
 		
 		Optional<CommentBean> comm = commentRepository.findById(id);

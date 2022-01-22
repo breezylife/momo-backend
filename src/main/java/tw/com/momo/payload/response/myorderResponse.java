@@ -19,6 +19,8 @@ public interface myorderResponse{
 	Integer getTotal();
 	Integer getPrid();
 	Integer getStock();
+	Integer getOrderdetailid ();
+	Integer getIscommented();
 	String getSpec();
 	String getSetuptime();
 	String getCover();
