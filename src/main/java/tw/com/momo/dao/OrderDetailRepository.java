@@ -22,7 +22,7 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetailBean, In
 	@Query(value = 
 			"SELECT od.*,"
 			+ "pr.name,odd.num,odd.prprice,pr.category,(odd.prprice*odd.num)AS prtotal"
-			+ ",pr.id AS prid,pr.cover,spec.spec,spec.stock,odd.id as orderdetailid "
+			+ ",pr.id AS prid,pr.cover,spec.spec,spec.stock,odd.id as orderdetailid,odd.iscommented "
 			+ "FROM orderdetail AS odd JOIN orders AS od "
 			+ "ON odd.ordersid = od.id JOIN products AS pr "
 			+ "ON pr.id = odd.productsid JOIN productspec "
