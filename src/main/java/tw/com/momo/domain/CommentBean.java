@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -20,26 +22,26 @@ public class CommentBean {
 	private Integer id;
 	@Column(name = "board")
 	private String board;
+	@Column(name = "star")
+	private Integer star;
 	@Column(name = "productsid")
 	private Integer productsid;
-	@Column(name = "userid")
-	private Integer userid;
+	
+	@ManyToOne(targetEntity = UserBean.class)
+	@JoinColumn(name = "userid", nullable = false)
+	private UserBean user;
 
 	@Temporal(TemporalType.TIMESTAMP)
     private Date setuptime;
 	
- 
 	public CommentBean() {
+
+    }
+ 
+	public CommentBean(UserBean user) {
+		this.user = user;
         setuptime = new Date();
     }	
-	
-	public Integer getUserid() {
-		return userid;
-	}
-
-	public void setUserid(Integer userid) {
-		this.userid = userid;
-	}
 
 	public Integer getProductsid() {
 		return productsid;
@@ -73,12 +75,12 @@ public class CommentBean {
 	public void setSetuptime(Date setuptime) {
 		this.setuptime = setuptime;
 	}
-
-
-	@Override
-	public String toString() {
-		return "CommentBean [id=" + id + ", indexx=" + board + ", userid="
-				+ ", setuptime=" + setuptime + "]";
+	public Integer getStar() {
+		return star;
 	}
-	
+
+	public void setStar(Integer star) {
+		this.star = star;
+	}
+
 }

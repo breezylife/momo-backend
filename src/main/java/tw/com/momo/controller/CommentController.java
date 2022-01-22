@@ -45,7 +45,7 @@ public class CommentController {
 	@GetMapping("/comment/{id}")
 	@CrossOrigin
 	public ResponseEntity<?> select(@PathVariable("id") Integer id){
-	
+		
 		Iterable<CommentBean> comments = commentRepository.findAllByProductsid(id);
 
 		System.out.println(comments);
@@ -55,28 +55,25 @@ public class CommentController {
 	@PostMapping("/comment/{prid}/{oddid}")
 	@CrossOrigin
 	public ResponseEntity<?> comment(@PathVariable("prid") Integer prid ,@PathVariable("oddid") Integer oddid, @RequestBody CommentDto commentDto) {
-		
-//		UserDetailsImpl userDetails = (UserDetailsImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//		Integer user = userDetails.getId();
-		
+
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserBean user = userRepository.findByUsername(userDetails.getUsername());
 //		System.out.println(user.getId());
 			
-			CommentBean comment = new CommentBean();
+			CommentBean comment = new CommentBean(user);
 			comment.setboard(commentDto.getBroad());
+			comment.setStar(commentDto.getStar());
 			comment.setProductsid(prid);
-			comment.setUserid(user.getId());
+//			comment.setUserid(user.getId());
+			
 			commentRepository.save(comment);
 			
-			System.out.println("com:"+commentDto);
 			Optional<OrderDetailBean> setState =orderDetailRepository.findById(oddid);
 			OrderDetailBean order=setState.get();
 			order.setIscommented(1);
 			orderDetailRepository.save(order);
 			
-			return new ResponseEntity<>("已送出評論", HttpStatus.OK);
-			
+			return ResponseEntity.ok(comment);
 			
 	}
 	
