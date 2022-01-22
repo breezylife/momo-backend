@@ -1,6 +1,7 @@
 package tw.com.momo.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -8,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import tw.com.momo.domain.OrderDetailBean;
+import tw.com.momo.domain.ProductBean;
 import tw.com.momo.payload.response.myorderResponse;
 
 @Repository
@@ -15,12 +17,12 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetailBean, In
 	
 //	public  List<OrderDetailBean> findByOrder(OrderBean order);
 //	public  List<OrderDetailBean> findByOrderid(Integer id);
+//	public  Optional<OrderDetailBean> findByProductBean1(ProductBean ProductBean);
 	
 	@Query(value = 
-//			"SELECT od.id, od.shipping,od.payment,od.status,od.shippingadd,"
 			"SELECT od.*,"
 			+ "pr.name,odd.num,odd.prprice,pr.category,(odd.prprice*odd.num)AS prtotal"
-			+ ",pr.id AS prid,pr.cover,spec.spec,spec.stock "
+			+ ",pr.id AS prid,pr.cover,spec.spec,spec.stock,odd.id as orderdetailid "
 			+ "FROM orderdetail AS odd JOIN orders AS od "
 			+ "ON odd.ordersid = od.id JOIN products AS pr "
 			+ "ON pr.id = odd.productsid JOIN productspec "
@@ -36,4 +38,5 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetailBean, In
 			+ "JOIN user AS us ON od.userid =us.id WHERE pr.sellerid = 2  ",nativeQuery = true)
 	public List<myorderResponse> getmyprwithorder(@Param("id") Integer id);
 
+	
 }

@@ -18,8 +18,8 @@ public class CommentBean {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
-	@Column(name = "broad")
-	private String broad;
+	@Column(name = "board")
+	private String board;
 	@Column(name = "productsid")
 	private Integer productsid;
 	@Column(name = "userid")
@@ -57,12 +57,12 @@ public class CommentBean {
 		this.id = id;
 	}
 
-	public String getbroad() {
-		return broad;
+	public String getboard() {
+		return board;
 	}
 
-	public void setbroad(String broad) {
-		this.broad = broad;
+	public void setboard(String broad) {
+		this.board = broad;
 	}
 
 
@@ -77,7 +77,7 @@ public class CommentBean {
 
 	@Override
 	public String toString() {
-		return "CommentBean [id=" + id + ", indexx=" + broad + ", userid="
+		return "CommentBean [id=" + id + ", indexx=" + board + ", userid="
 				+ ", setuptime=" + setuptime + "]";
 	}
 	

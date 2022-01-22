@@ -75,8 +75,8 @@ public class OrderBean {
 	@Column(name = "SETUPTIME")
 	private Date setuptime;
 	
-	@Column(name = "USERPHOTO")
-	private String userphoto;
+//	@Column(name = "USERPHOTO")
+//	private String userphoto;
 
 	@Override
 	public String toString() {
@@ -140,11 +140,11 @@ public class OrderBean {
 		this.setuptime = setuptime;
 	}
 
-	public String getUserphoto() {
-		return userphoto;
-	}
-
-	public void setUserphoto(String userphoto) {
-		this.userphoto = userphoto;
-	}
+//	public String getUserphoto() {
+//		return userphoto;
+//	}
+//
+//	public void setUserphoto(String userphoto) {
+//		this.userphoto = userphoto;
+//	}
 }
