@@ -247,6 +247,8 @@ public class AllInOneUtils {
 		obj.setTradeDesc("test Description");
 		obj.setItemName(itemName);
 		obj.setReturnURL("http://211.23.128.214:5000");
+//		obj.setOrderResultURL("http://localhost:3000/memberCenter");
+		obj.setClientBackURL("http://localhost:3000/memberCenter");
 		obj.setNeedExtraPaidInfo("N");
 		obj.setRedeem("Y");
 		String form = all.aioCheckOut(obj, null);
