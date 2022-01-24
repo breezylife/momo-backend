@@ -114,8 +114,6 @@ public class ProductRestApiController {
 		product.setPrice(productDto.getPrice());
 		product.setDescription(productDto.getDescription());
 		product.setCategory(productDto.getCategory());
-
-
 		product.setState(1);
 		
 		List<String> url = productDto.getUrl();

@@ -43,9 +43,14 @@ public class OrderDetailBean {
 	@Column(name = "PRPRICE")
 	private Integer prprice;
 
+	@Column(name = "iscommented", nullable = false)
+	private Integer iscommented;
+	
+	
 	@Override
 	public String toString() {
-		return "OrderDetailBean [id =" + id + ", num =" + num +",product_name = "+ prprice +", price = "+ prprice + "]";
+		return "OrderDetailBean [id =" + id + ", num =" + num +",product_name = "+ prprice +","
+				+ " price = "+ prprice + ",iscommented ="+iscommented+"]";
 	}
 
 	public Integer getId() {
@@ -94,6 +99,14 @@ public class OrderDetailBean {
 
 	public void setPrprice(Integer prprice) {
 		this.prprice = prprice;
+	}
+
+	public Integer getIscommented() {
+		return iscommented;
+	}
+
+	public void setIscommented(Integer iscommented) {
+		this.iscommented = iscommented;
 	}
 	
 }

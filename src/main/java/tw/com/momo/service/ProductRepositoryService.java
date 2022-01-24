@@ -37,6 +37,7 @@ public class ProductRepositoryService{
 			Optional<ProductBean> optional = productRepository.findById(id);
 			if(optional.isPresent()) {
 				ProductBean product = optional.get();
+				System.out.println("rpaspdfpzxcv"+product);
 				if(product.getState().equals(1)) {
 					product.setState(0);
 				}else if(product.getState().equals(0)) {
