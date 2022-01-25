@@ -58,7 +58,6 @@ public class CommentController {
 
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserBean user = userRepository.findByUsername(userDetails.getUsername());
-//		System.out.println(user.getId());
 			
 			CommentBean comment = new CommentBean(user);
 			comment.setboard(commentDto.getBroad());
