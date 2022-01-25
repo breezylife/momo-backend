@@ -1,20 +1,14 @@
 package tw.com.momo.domain;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -75,13 +69,19 @@ public class OrderBean {
 	@Column(name = "SETUPTIME")
 	private Date setuptime;
 	
+	@Column(name = "TEL")
+	private String tel ;
+	
+	@Column(name = "CONSIGNEE")
+	private String consignee;
+	
 //	@Column(name = "USERPHOTO")
 //	private String userphoto;
 
 	@Override
 	public String toString() {
 		return "OrderBean [id=" + id + ", total=" + total + ", shipping=" + shipping + ", payment=" + payment
-				+ ", status=" + status + ", shippingadd=" + shippingadd + "]";
+				+ ", status=" + status + ", shippingadd=" + shippingadd + ", tel=" + tel + ", consignee=" + consignee + "]";
 	}
 
 	public Integer getId() {
@@ -139,6 +139,24 @@ public class OrderBean {
 	public void setSetuptime(Date setuptime) {
 		this.setuptime = setuptime;
 	}
+
+	public String getTel() {
+		return tel;
+	}
+
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+
+	public String getConsignee() {
+		return consignee;
+	}
+
+	public void setConsignee(String consignee) {
+		this.consignee = consignee;
+	}
+	
+	
 
 //	public String getUserphoto() {
 //		return userphoto;
