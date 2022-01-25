@@ -117,7 +117,7 @@ public class OrderRepositoryController {
 			orderDetail.setNum(product.getNum());
 			orderDetail.setIscommented(0);
 			orderDetailRepository.save(orderDetail);
-			System.out.println(orderDetail);
+			System.out.println("orderDetail = "+newoder);
 		}
 		if (result != null) {
 			URI uri = URI.create("/neworder" + result.getId());

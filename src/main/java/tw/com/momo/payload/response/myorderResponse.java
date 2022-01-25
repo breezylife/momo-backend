@@ -23,6 +23,8 @@ public interface myorderResponse{
 	Integer getIscommented();
 	String getSpec();
 	String getSetuptime();
+	String getTel();
+	String getConsignee();
 	String getCover();
 	
 }

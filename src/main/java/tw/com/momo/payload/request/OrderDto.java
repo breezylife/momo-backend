@@ -2,6 +2,8 @@ package tw.com.momo.payload.request;
 
 import java.util.List;
 
+import tw.com.momo.domain.ProductBean;
+
 public class OrderDto {
 	private Integer id;
 	private Integer total;
