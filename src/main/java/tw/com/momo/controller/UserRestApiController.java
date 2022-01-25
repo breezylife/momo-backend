@@ -61,7 +61,7 @@ public class UserRestApiController {
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtUtils.generateJwtToken(authentication);
-		System.out.println(jwt);
+//		System.out.println(jwt);
 		return new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail());
 
 	}
