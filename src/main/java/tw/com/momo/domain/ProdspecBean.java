@@ -39,7 +39,7 @@ public class ProdspecBean {
 	
 	@Override
 	public String toString() {
-		return "ProudspecBean [product=" + product + ", id=" + id + ", spec=" + spec + "]";
+		return "ProdspecBean [id=" + id + ", spec=" + spec + ", stock=" + stock + "]";
 	}
 
 	public ProductBean getProduct() {
