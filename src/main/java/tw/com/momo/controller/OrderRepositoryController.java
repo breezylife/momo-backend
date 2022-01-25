@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import tw.com.momo.dao.OrderDetailRepository;
+import tw.com.momo.dao.OrderRepository;
 import tw.com.momo.dao.ProdspecRepository;
 import tw.com.momo.dao.ProductRepository;
 import tw.com.momo.dao.UserRepository;
@@ -48,6 +49,9 @@ public class OrderRepositoryController {
 	
 	@Autowired
 	private ProdspecRepository prodspecRepository;
+	
+	@Autowired
+	private OrderRepository orderRepository;
 
 	/*
 	 * method:select all order
@@ -139,12 +143,29 @@ public class OrderRepositoryController {
 	/*
 	 * method:update update order status by orderid
 	 */
-	@PatchMapping(path = "/next/{id}")
+//	@PatchMapping(path = "/next/{id}")
+//	@CrossOrigin
+//	public ResponseEntity<?> nextStatus(@PathVariable Integer id, @RequestBody OrderDto order) {
+//		OrderBean result = orderRepositoryService.nextStep(id);
+//		if (result != null) {
+//			return ResponseEntity.ok().body(result);
+//		}
+//		return ResponseEntity.notFound().build();
+//	}
+	
+	//0125
+	//接收前端賣家指示,切換訂單狀態 0表示'取消訂單', 1表示'等待出貨', 2表示'已出貨', 3表示'完成訂單'
+	@PatchMapping(path = "/OrderStatus/{id}/{status}")
 	@CrossOrigin
-	public ResponseEntity<?> nextStatus(@PathVariable Integer id, @RequestBody OrderDto order) {
-		OrderBean result = orderRepositoryService.nextStep(id);
-		if (result != null) {
-			return ResponseEntity.ok().body(result);
+	public ResponseEntity<?> setStatus(@PathVariable Integer id
+									, @PathVariable Integer status
+									, @RequestBody OrderDto myorder) {
+		Optional<OrderBean> optional = orderRepository.findById(id);
+		if(optional.isPresent()) {
+			OrderBean result = optional.get();
+			result.setStatus(status);
+			OrderBean order = orderRepository.save(result);
+			return ResponseEntity.ok().body(order);
 		}
 		return ResponseEntity.notFound().build();
 	}
