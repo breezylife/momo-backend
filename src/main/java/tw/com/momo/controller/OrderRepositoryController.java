@@ -67,7 +67,7 @@ public class OrderRepositoryController {
 		UserBean user = userRepository.findByUsername(userDetails.getUsername());
 		
 		List<myorderResponse> myorders = orderDetailRepository.getmyorderdetail(user.getId());
-		System.out.println("myorders="+user);
+//		System.out.println("myorders="+myorders);
 		return ResponseEntity.ok(myorders);
 	}
 	
@@ -104,6 +104,8 @@ public class OrderRepositoryController {
 		newoder.setPayment(order.getPayment());
 		newoder.setShipping(order.getShipping());
 		newoder.setStatus(1);
+		newoder.setTel(order.getTel());
+		newoder.setConsignee(order.getConsignee());
 		newoder.setShippingadd(order.getShippingadd());
 
 		OrderBean result = orderRepositoryService.createOrder(newoder);

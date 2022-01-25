@@ -2,8 +2,6 @@ package tw.com.momo.payload.request;
 
 import java.util.List;
 
-import tw.com.momo.domain.ProductBean;
-
 public class OrderDto {
 	private Integer id;
 	private Integer total;
@@ -11,7 +9,8 @@ public class OrderDto {
 	private Integer payment;
 	private Integer status;
 	private Integer shippingadd;
-	
+	private String consignee;
+	private String tel ;
 	private String email;
 	private List<OrderDetailDto> products;
 	
@@ -63,4 +62,17 @@ public class OrderDto {
 	public void setProducts(List<OrderDetailDto> products) {
 		this.products = products;
 	}
+	public String getConsignee() {
+		return consignee;
+	}
+	public void setConsignee(String consignee) {
+		this.consignee = consignee;
+	}
+	public String getTel() {
+		return tel;
+	}
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+	
 }
