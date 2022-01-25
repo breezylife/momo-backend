@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import tw.com.momo.dao.OrderDetailRepository;
+import tw.com.momo.dao.ProdspecRepository;
 import tw.com.momo.dao.ProductRepository;
 import tw.com.momo.dao.UserRepository;
 import tw.com.momo.domain.OrderBean;
 import tw.com.momo.domain.OrderDetailBean;
+import tw.com.momo.domain.ProdspecBean;
 import tw.com.momo.domain.ProductBean;
 import tw.com.momo.domain.UserBean;
 import tw.com.momo.payload.request.OrderDetailDto;
@@ -43,6 +45,9 @@ public class OrderRepositoryController {
 
 	@Autowired
 	private OrderDetailRepository orderDetailRepository;
+	
+	@Autowired
+	private ProdspecRepository prodspecRepository;
 
 	/*
 	 * method:select all order
@@ -94,7 +99,7 @@ public class OrderRepositoryController {
 	public ResponseEntity<?> createNewOrder(@RequestBody OrderDto order) {
 		List<OrderDetailDto> products = order.getProducts();
 		System.out.println("order="+order);
-		System.out.println("products="+order);
+		System.out.println("products="+products);
 		// get user
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserBean user = userRepository.findByUsername(userDetails.getUsername());
@@ -110,8 +115,13 @@ public class OrderRepositoryController {
 
 		OrderBean result = orderRepositoryService.createOrder(newoder);
 		for (OrderDetailDto product : products) {
-			Optional<ProductBean> prod = productRepository.findById(product.getId());
-			OrderDetailBean orderDetail = new OrderDetailBean(newoder, prod.get());
+			Optional<ProductBean> optional = productRepository.findById(product.getId());
+			ProductBean prod = optional.get();
+			Optional<ProdspecBean> op = prodspecRepository.findByProductAndSpec(prod, product.getSpec());
+			ProdspecBean prodSpec = op.get();
+			prodSpec.setStock(prodSpec.getStock() - product.getNum());
+			
+			OrderDetailBean orderDetail = new OrderDetailBean(newoder, prod);
 			orderDetail.setPrname(product.getName());
 			orderDetail.setPrprice(product.getPrice());
 			orderDetail.setNum(product.getNum());

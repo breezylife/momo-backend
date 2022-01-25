@@ -6,10 +6,12 @@ public class OrderDetailDto {
 	private String name;
 	private Integer num;
 	private Integer price;
+	private String spec;
 	
 	@Override
 	public String toString() {
-		return "OrderDetailDto [id=" + id + ", name=" + name + ", num=" + num + ", price=" + price + "]";
+		return "OrderDetailDto [id=" + id + ", name=" + name + ", num=" + num + ", price=" + price + ", spec=" + spec
+				+ "]";
 	}
 	
 	public Integer getId() {
@@ -35,5 +37,13 @@ public class OrderDetailDto {
 	}
 	public void setPrice(Integer price) {
 		this.price = price;
+	}
+
+	public String getSpec() {
+		return spec;
+	}
+
+	public void setSpec(String spec) {
+		this.spec = spec;
 	}
 }

@@ -64,7 +64,7 @@ public class OrderBean {
 	private Integer status;
 	
 	@Column(name = "SHIPPINGADD")
-	private Integer shippingadd;
+	private String shippingadd;
 	
 	@Column(name = "SETUPTIME")
 	private Date setuptime;
@@ -124,11 +124,11 @@ public class OrderBean {
 		this.status = status;
 	}
 
-	public Integer getShippingadd() {
+	public String getShippingadd() {
 		return shippingadd;
 	}
 
-	public void setShippingadd(Integer shippingadd) {
+	public void setShippingadd(String shippingadd) {
 		this.shippingadd = shippingadd;
 	}
 

@@ -8,7 +8,7 @@ public class OrderDto {
 	private Integer shipping;
 	private Integer payment;
 	private Integer status;
-	private Integer shippingadd;
+	private String shippingadd;
 	private String consignee;
 	private String tel ;
 	private String email;
@@ -44,10 +44,10 @@ public class OrderDto {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-	public Integer getShippingadd() {
+	public String getShippingadd() {
 		return shippingadd;
 	}
-	public void setShippingadd(Integer shippingadd) {
+	public void setShippingadd(String shippingadd) {
 		this.shippingadd = shippingadd;
 	}
 	public String getEmail() {
