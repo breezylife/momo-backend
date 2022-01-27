@@ -170,12 +170,10 @@ public class UserRestApiController {
 	@CrossOrigin
 	public ResponseEntity<?> oauthRegister(@RequestBody OauthRequestDto oauthRequestDto) {
 		UserBean user = new UserBean();
-		if (userRepository.existsByUsername(oauthRequestDto.getDisplayName())) {
-//			return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);\
-			return new ResponseEntity<String>("使用者名稱已有人使用", HttpStatus.NOT_FOUND);
-		} else if (userRepository.existsByEmail(oauthRequestDto.getEmail())) {
-//			return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
-			return new ResponseEntity<String>("電子郵件已有人使用", HttpStatus.NOT_FOUND);
+		
+		if (userRepository.existsByEmail(oauthRequestDto.getEmail())) {
+			user = userRepository.findByEmail(oauthRequestDto.getEmail());
+			return ResponseEntity.ok().body(user);
 		} else {
 			user.setEmail(oauthRequestDto.getEmail());
 			user.setPassword(passwordEncoder.encode(oauthRequestDto.getUid()));
