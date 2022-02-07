@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -59,7 +60,8 @@ public class OrderRepositoryController {
 	@GetMapping(path = "/orders")
 	@CrossOrigin
 	public ResponseEntity<?> read() {
-		Iterable<OrderDetailBean> orderdetails = orderDetailRepository.findAll();
+		Iterable<OrderDetailBean> orderdetails = 
+				orderDetailRepository.findAll(Sort.by(Sort.Direction.ASC,"UserBean"));
 		return ResponseEntity.ok(orderdetails);
 	}
 	
