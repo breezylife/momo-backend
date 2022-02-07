@@ -27,7 +27,7 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetailBean, In
 			+ "ON odd.ordersid = od.id JOIN products AS pr "
 			+ "ON pr.id = odd.productsid JOIN productspec "
 			+ "AS spec ON spec.id = odd.productsid "
-			+ "WHERE od.userid = :id",nativeQuery = true)
+			+ "WHERE od.userid = :id ORDER BY od.id DESC ",nativeQuery = true)
 	public List<myorderResponse> getmyorderdetail(@Param("id") Integer id);
 	
 	@Query(value = "SELECT od.id,od.shippingadd,od.payment,od.status,od.userid AS buyerid,"
