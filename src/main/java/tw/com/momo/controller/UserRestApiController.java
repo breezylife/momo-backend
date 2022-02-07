@@ -60,10 +60,15 @@ public class UserRestApiController {
 
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		String jwt = jwtUtils.generateJwtToken(authentication);
+		
+		if(userRepository.findByEmail(userDetails.getEmail()).isenabled()) {
+			String jwt = jwtUtils.generateJwtToken(authentication);
+			return new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail());
+		}else {
+			return new JwtResponse(null, null, null, null);
+		}
 //		System.out.println(jwt);
-		return new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail());
-
+		
 	}
 
 	@GetMapping("/user")
