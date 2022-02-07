@@ -12,6 +12,8 @@ public class EcpayDto {
 	private String address;
 	private String payment;
 	private String delivery;
+	private String deliverySub;
+	
 	public List<ProductBean> getProducts() {
 		return products;
 	}

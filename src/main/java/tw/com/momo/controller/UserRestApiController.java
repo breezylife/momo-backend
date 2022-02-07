@@ -60,10 +60,15 @@ public class UserRestApiController {
 
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		String jwt = jwtUtils.generateJwtToken(authentication);
+		
+		if(userRepository.findByEmail(userDetails.getEmail()).isenabled()) {
+			String jwt = jwtUtils.generateJwtToken(authentication);
+			return new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail());
+		}else {
+			return new JwtResponse(null, null, null, null);
+		}
 //		System.out.println(jwt);
-		return new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail());
-
+		
 	}
 
 	@GetMapping("/user")
@@ -170,12 +175,10 @@ public class UserRestApiController {
 	@CrossOrigin
 	public ResponseEntity<?> oauthRegister(@RequestBody OauthRequestDto oauthRequestDto) {
 		UserBean user = new UserBean();
-		if (userRepository.existsByUsername(oauthRequestDto.getDisplayName())) {
-//			return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);\
-			return new ResponseEntity<String>("使用者名稱已有人使用", HttpStatus.NOT_FOUND);
-		} else if (userRepository.existsByEmail(oauthRequestDto.getEmail())) {
-//			return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
-			return new ResponseEntity<String>("電子郵件已有人使用", HttpStatus.NOT_FOUND);
+		
+		if (userRepository.existsByEmail(oauthRequestDto.getEmail())) {
+			user = userRepository.findByEmail(oauthRequestDto.getEmail());
+			return ResponseEntity.ok().body(user);
 		} else {
 			user.setEmail(oauthRequestDto.getEmail());
 			user.setPassword(passwordEncoder.encode(oauthRequestDto.getUid()));
