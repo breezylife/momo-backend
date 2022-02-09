@@ -110,9 +110,9 @@ public class UserRestApiController {
 
 			SimpleMailMessage mailMessage = new SimpleMailMessage();
 			mailMessage.setTo(user.getEmail());
-			mailMessage.setSubject("Complete Registration!");
+			mailMessage.setSubject("您好！ 歡迎來到哞哞購物!");
 			mailMessage.setFrom("chand312902@gmail.com");
-			mailMessage.setText("To confirm your account, please click here : "
+			mailMessage.setText("您好 ! " +user.getUsername() +". 請驗證信中連結，繼續完成註冊步驟 : "
 					+ "http://localhost:8080/api/auth/confirm-account?token="
 					+ confirmationToken.getConfirmationToken());
 
@@ -203,7 +203,10 @@ public class UserRestApiController {
 
 			userRepository.save(user);
 
-			content = "<h3>Congratulations! Your account has been activated and email is verified!</h3>";
+			content = "<h3>Hello ! "+user.getUsername()+" , You have successfully registered!</h3> \r\n"
+					+ "<script language=\"javascript\">  \r\n"
+					+ " setTimeout(\"location.href='http://localhost:3000';\", 1000);  \r\n"
+					+ "</script>  ";
 //			Optional<UserBean> user = userRepository.findByEmail(token.getUserBean().getEmail());
 //			user.get().setEnabled(true);
 //			userRepository.save(user);
@@ -212,7 +215,7 @@ public class UserRestApiController {
 		} else {
 //			modelAndView.addObject("message", "The link is invalid or broken!");
 //			modelAndView.setViewName("error");
-			content = "<h3><span>The link is invalid or broken</span></h3>";
+			content = "<h3><span>The link is invalid or broken!</span></h3>";
 			return new ResponseEntity<String>(content, responseHeaders, HttpStatus.NOT_FOUND);
 		}
 
