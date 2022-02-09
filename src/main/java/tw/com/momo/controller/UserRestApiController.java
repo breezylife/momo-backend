@@ -204,6 +204,11 @@ public class UserRestApiController {
 			userRepository.save(user);
 
 			content = "<h3>Hello ! "+user.getUsername()+" , You have successfully registered!</h3> \r\n"
+					+ "<img src=\"https://fonts.gstatic.com/s/e/notoemoji/14.0/1f389/72.png\">  \r\n"
+					+ "<img src=\"https://fonts.gstatic.com/s/e/notoemoji/14.0/1f389/72.png\">  \r\n"
+					+ "<img src=\"https://fonts.gstatic.com/s/e/notoemoji/14.0/1f389/72.png\">  \r\n"
+					+ "<img src=\"https://fonts.gstatic.com/s/e/notoemoji/14.0/1f389/72.png\">  \r\n"
+					+ "<img src=\"https://fonts.gstatic.com/s/e/notoemoji/14.0/1f389/72.png\">  \r\n"
 					+ "<script language=\"javascript\">  \r\n"
 					+ " setTimeout(\"location.href='http://localhost:3000';\", 1000);  \r\n"
 					+ "</script>  ";
