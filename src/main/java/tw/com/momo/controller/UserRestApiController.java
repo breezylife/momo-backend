@@ -112,7 +112,7 @@ public class UserRestApiController {
 			mailMessage.setTo(user.getEmail());
 			mailMessage.setSubject("您好！ 歡迎來到哞哞購物!");
 			mailMessage.setFrom("chand312902@gmail.com");
-			mailMessage.setText("您好 ! " +user.getUsername() +". 請驗證信中連結，繼續完成註冊步驟 : "
+			mailMessage.setText("您好 ! " + user.getUsername() + " , 請驗證信中連結，繼續完成註冊步驟 : "
 					+ "http://localhost:8080/api/auth/confirm-account?token="
 					+ confirmationToken.getConfirmationToken());
 
@@ -203,7 +203,7 @@ public class UserRestApiController {
 
 			userRepository.save(user);
 
-			content = "<h3>Hello ! "+user.getUsername()+" , You have successfully registered!</h3> \r\n"
+			content = "<h3>Hello ! You have successfully registered!</h3> \r\n"
 					+ "<img src=\"https://fonts.gstatic.com/s/e/notoemoji/14.0/1f389/72.png\">  \r\n"
 					+ "<img src=\"https://fonts.gstatic.com/s/e/notoemoji/14.0/1f389/72.png\">  \r\n"
 					+ "<img src=\"https://fonts.gstatic.com/s/e/notoemoji/14.0/1f389/72.png\">  \r\n"
