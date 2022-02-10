@@ -21,7 +21,7 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetailBean, In
 	
 	@Query(value = 
 			"SELECT od.*,"
-			+ "pr.name,odd.num,odd.prprice,pr.category,(odd.prprice*odd.num)AS prtotal"
+			+ "pr.name,odd.num,odd.prprice,pr.category,pr.sellerid ,(odd.prprice*odd.num)AS prtotal"
 			+ ",pr.id AS prid,pr.cover,spec.spec,spec.stock,odd.id as orderdetailid,odd.iscommented "
 			+ "FROM orderdetail AS odd JOIN orders AS od "
 			+ "ON odd.ordersid = od.id JOIN products AS pr "
@@ -30,13 +30,17 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetailBean, In
 			+ "WHERE od.userid = :id ORDER BY od.id DESC ",nativeQuery = true)
 	public List<myorderResponse> getmyorderdetail(@Param("id") Integer id);
 	
-	@Query(value = "SELECT od.id,od.shippingadd,od.payment,od.status,od.userid AS buyerid,"
-			+ "od.setuptime ,pr.name AS productname,pr.price,odd.num,"
-			+ "(odd.num*pr.price)AS prtotal,us.username AS buyername"
-			+ " FROM orders AS od JOIN orderdetail AS odd ON od.id = odd.ordersid"
-			+ " JOIN products AS pr ON pr.id= odd.productsid "
-			+ "JOIN user AS us ON od.userid =us.id WHERE pr.sellerid = 2  ",nativeQuery = true)
+	@Query(value = 
+			"SELECT od.*,"
+			+ "pr.name,odd.num,odd.prprice,pr.category,pr.sellerid ,(odd.prprice*odd.num)AS prtotal"
+			+ ",pr.id AS prid,pr.cover,spec.spec,spec.stock,odd.id as orderdetailid,odd.iscommented "
+			+ "FROM orderdetail AS odd JOIN orders AS od "
+			+ "ON odd.ordersid = od.id JOIN products AS pr "
+			+ "ON pr.id = odd.productsid JOIN productspec "
+			+ "AS spec ON spec.id = odd.productsid "
+			+ "WHERE pr.sellerid = :id AND NOT od.userid = :id ORDER BY od.id DESC  ",nativeQuery = true)
 	public List<myorderResponse> getmyprwithorder(@Param("id") Integer id);
 
+	
 	
 }

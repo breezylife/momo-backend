@@ -8,6 +8,7 @@ public interface myorderResponse{
 	String getShippingadd();
 	String getname();
 	Integer getNum();
+	Integer getSellerid();
 	Integer getPrice();
 	Integer getPrprice();
 	String getCategory();
