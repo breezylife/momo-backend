@@ -179,6 +179,9 @@ public class UserRestApiController {
 		if (userRepository.existsByEmail(oauthRequestDto.getEmail())) {
 			user = userRepository.findByEmail(oauthRequestDto.getEmail());
 			return ResponseEntity.ok().body(user);
+		} else if(userRepository.existsByUsername(oauthRequestDto.getDisplayName())){
+			String err = "{\"error\":1}";
+			return ResponseEntity.badRequest().body(err);
 		} else {
 			user.setEmail(oauthRequestDto.getEmail());
 			user.setPassword(passwordEncoder.encode(oauthRequestDto.getUid()));
